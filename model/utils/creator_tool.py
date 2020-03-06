@@ -90,7 +90,8 @@ class ProposalTargetCreator(object):
 
         """
         #n_bbox, _ = bbox.shape
-
+        # print("bbox shape before concat: ", bbox)
+        # print("roi shape before concat: ", roi, roi.shape)
         roi = np.concatenate((roi, bbox), axis=0)
 
         pos_roi_per_image = np.round(self.n_sample * self.pos_ratio)

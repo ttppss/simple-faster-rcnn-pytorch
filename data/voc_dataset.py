@@ -76,13 +76,17 @@ class VOCBboxDataset:
         # id_list_file = os.path.join(
         #     data_dir, 'ImageSets/Main/{0}.txt'.format(split))
 
-        self.json_anno = json.load(open(os.path.join(data_dir, "large_dataset/polyp_large_train_annots.json")))
+        if split == "train":
+            self.json_anno = json.load(open(os.path.join(data_dir, "large_dataset/polyp_large_train_annots.json")))
+        else:
+            self.json_anno = json.load(open(os.path.join(data_dir, "polyp_cvc_test.json")))
 
         # self.ids = [id_.strip() for id_ in open(id_list_file)]
         self.data_dir = data_dir
         self.use_difficult = use_difficult
         self.return_difficult = return_difficult
         # self.label_names = VOC_BBOX_LABEL_NAMES
+
 
     def __len__(self):
         # return len(self.ids)
@@ -113,7 +117,7 @@ class VOCBboxDataset:
             bbox.append([box[1], box[0], box[3], box[2]])
         label = [1] * len(im_info["gt_bboxes"])
         bbox = np.stack(bbox).astype(np.float32)
-        print(bbox)
+        # print(bbox)
         label = np.stack(label).astype(np.int32)
         #################
 

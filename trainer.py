@@ -88,7 +88,7 @@ class FasterRCNNTrainer(nn.Module):
             namedtuple of 5 losses
         """
         n = bboxes.shape[0]
-        print("bboes: ", bboxes)
+        # print("bboes: ", bboxes)
         if n != 1:
             raise ValueError('Currently only batch size 1 is supported.')
 
@@ -106,8 +106,8 @@ class FasterRCNNTrainer(nn.Module):
         rpn_score = rpn_scores[0]
         rpn_loc = rpn_locs[0]
         roi = rois
-        print("bbox before roi: ", bbox, bbox.shape)
-        print("roi: ", roi, "roi shape: ", roi.shape)
+        # print("bbox before roi: ", bbox)
+        # print("roi: ", roi, "roi shape: ", roi.shape)
 
         # Sample RoIs and forward
         # it's fine to break the computation graph of rois, 

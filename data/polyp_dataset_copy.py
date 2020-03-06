@@ -86,7 +86,7 @@ class Polypcoco_anchorfree(Dataset):
         super(Polypcoco_anchorfree, self).__init__()
         # print("="*20, "start init", "="*20)
         anno_files = glob.glob(os.path.join(base_dir, "polyp_large_train_annots.json"))
-        print(anno_files)
+        # print(anno_files)
         ids_file = os.path.join(base_dir, 'large_dataset/{}_ids.pth'.format(split))
         assert len(anno_files) > 0
         self.bbox_transform = bbox_transform
