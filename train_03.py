@@ -86,9 +86,9 @@ def eval(dataloader, faster_rcnn, test_num, thresh = 0.01):
 def train(**kwargs):
     opt._parse(kwargs)
 
-    dataset = Polypcoco_anchorfree('/data2/dechunwang/dataset', split='train')
+    #dataset = Polypcoco_anchorfree('/data2/dechunwang/dataset', split='train')
     #print("dataset length: ", len(dataset))
-    #dataset = Dataset(opt)
+    dataset = Dataset(opt)
     print('load data')
     dataloader = data_.DataLoader(dataset, \
                                   batch_size=1, \
@@ -122,10 +122,10 @@ def train(**kwargs):
         for ii, (img, bbox_, label_, scale) in enumerate(dataloader):
             #print("loader:", img.shape, bbox_.shape, label_.shape, scale.shape)
             scale = at.scalar(scale)
-            img = torch.FloatTensor(img).unsqueeze(0)
-            bbox_ = torch.FloatTensor(bbox_)
-            print("bbox_ shape: ", bbox_.shape)
-            label_ = torch.FloatTensor(label_)
+            # img = torch.FloatTensor(img).unsqueeze(0)
+            # bbox_ = torch.FloatTensor(bbox_)
+            # print("bbox_ shape: ", bbox_.shape)
+            # label_ = torch.FloatTensor(label_)
             img, bbox, label = img.cuda().float(), bbox_.cuda(), label_.cuda()
             #print(img.shape)
             trainer.train_step(img, bbox, label, scale)

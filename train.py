@@ -51,16 +51,16 @@ def eval(dataloader, faster_rcnn, test_num=10000):
 def train(**kwargs):
     opt._parse(kwargs)
 
-    dataset = Polypcoco_anchorfree('/data1/zinan/xiangya_backup', split='train')
-    #dataset = Dataset(opt)
+    #dataset = Polypcoco_anchorfree('/data1/zinan/xiangya_backup', split='train')
+    dataset = Dataset(opt)
     print('load data')
     dataloader = data_.DataLoader(dataset, \
                                   batch_size=1, \
                                   shuffle=True, \
                                   # pin_memory=True,
                                   num_workers=opt.num_workers)
-    #print(dataloader)
-    #for i, sample_image in enumerate(dataloader):
+    # print(dataloader)
+    # for i, sample_image in enumerate(dataloader):
     #    print(sample_image.size())
 
     #testset = TestDataset(opt)

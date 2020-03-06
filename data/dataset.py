@@ -1,5 +1,5 @@
-from __future__ import  absolute_import
-from __future__ import  division
+from __future__ import absolute_import
+from __future__ import division
 import torch as t
 from data.voc_dataset import VOCBboxDataset
 from skimage import transform as sktsf
@@ -63,10 +63,10 @@ def preprocess(img, min_size=600, max_size=1000):
     scale1 = min_size / min(H, W)
     scale2 = max_size / max(H, W)
     scale = min(scale1, scale2)
-    #print("before", img)
+    # print("before", img)
     img = img / 255.
-    #print("after", img)
-    img = sktsf.resize(img, (C, H * scale, W * scale), mode='reflect',anti_aliasing=False)
+    # print("after", img)
+    img = sktsf.resize(img, (C, H * scale, W * scale), mode='reflect', anti_aliasing=False)
     # both the longer and shorter should be less than
     # max_size and min_size
     if opt.caffe_pretrain:
@@ -85,16 +85,16 @@ class Transform(object):
     def __call__(self, in_data):
         img, bbox, label = in_data
         _, H, W = img.shape
-        #print("before preprocessing:", img.shape, img[:, 100: 200, 100: 200])
+        # print("before preprocessing:", img.shape, img[:, 100: 200, 100: 200])
         img = preprocess(img, self.min_size, self.max_size)
-        #print("after preprocessing:", img.shape, img[:, 100: 200, 100: 200])
+        # print("after preprocessing:", img.shape, img[:, 100: 200, 100: 200])
         _, o_H, o_W = img.shape
-        #TODO change the defenition of scale.
-        #warning: might have issue.
+        # TODO change the defenition of scale.
+        # warning: might have issue.
         scale = o_H / H
-        #print("bbox pre: ", bbox)
+        # print("bbox pre: ", bbox)
         bbox = util.resize_bbox(bbox, (H, W), (o_H, o_W))
-        #print("bbox after: ", bbox)
+        # print("bbox after: ", bbox)
         # horizontally flip
         img, params = util.random_flip(
             img, x_random=True, return_param=True)
@@ -112,11 +112,11 @@ class Dataset:
 
     def __getitem__(self, idx):
         ori_img, bbox, label, difficult = self.db.get_example(idx)
-        #print("voc input: ", ori_img, bbox, label)
-        #print("difficult", type(difficult), difficult, difficult.shape)
+        # print("voc input: ", ori_img, bbox, label)
+        # print("difficult", type(difficult), difficult, difficult.shape)
         img, bbox, label, scale = self.tsf((ori_img, bbox, label))
-        #print("voc ouptut:", img, bbox, label)
-        #print(bbox, label)
+        # print("voc ouptut:", img, bbox, label)
+        # print(bbox, label)
         # TODO: check whose stride is negative to fix this instead copy all
         # some of the strides of a given numpy array are negative.
         return img.copy(), bbox.copy(), label.copy(), scale
