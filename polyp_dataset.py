@@ -10,6 +10,10 @@ from PIL import Image, ImageFile
 from skimage import measure
 import imageio
 import sys
+from data.dataset import Transform as FSTrans
+from data.dataset import caffe_normalize, pytorch_normalze
+from skimage import transform as sktsf
+from utils.config import opt
 # from torchvision import transforms
 # from dataloader.dataloader_utils import decode_segmap
 # import matplotlib.pyplot as plt
@@ -34,6 +38,40 @@ class PolypAnnotationTransform(object):
         #print("convert3:", target, width, height)
         return target  # [[xmin, ymin, xmax, ymax, label_ind], ... ]
 
+def preprocess(img, min_size=600, max_size=1000):
+    """Preprocess an image for feature extraction.
+
+    The length of the shorter edge is scaled to :obj:`self.min_size`.
+    After the scaling, if the length of the longer edge is longer than
+    :param min_size:
+    :obj:`self.max_size`, the image is scaled to fit the longer edge
+    to :obj:`self.max_size`.
+
+    After resizing the image, the image is subtracted by a mean image value
+    :obj:`self.mean`.
+
+    Args:
+        img (~numpy.ndarray): An image. This is in CHW and RGB format.
+            The range of its value is :math:`[0, 255]`.
+
+    Returns:
+        ~numpy.ndarray: A preprocessed image.
+
+    """
+    C, H, W = img.shape
+    scale1 = min_size / min(H, W)
+    scale2 = max_size / max(H, W)
+    scale = min(scale1, scale2)
+    img = img / 255.
+    img = sktsf.resize(img, (C, H * scale, W * scale), mode='reflect',anti_aliasing=False)
+    # both the longer and shorter should be less than
+    # max_size and min_size
+    if opt.caffe_pretrain:
+        normalize = caffe_normalize
+    else:
+        normalize = pytorch_normalze
+    return normalize(img)
+
 
 class Polypcoco_anchorfree(Dataset):
     NUM_CLASSES = 1
@@ -41,14 +79,13 @@ class Polypcoco_anchorfree(Dataset):
 
     # CAT_LIST = [-1, 1, 2]
     def __init__(self,
-                 cfg,
                  base_dir,
                  split='train',
                  bbox_transform=None,
                  target_transform=PolypAnnotationTransform()
                  ):
         super(Polypcoco_anchorfree, self).__init__()
-
+        #print("="*20, "start init", "="*20)
         anno_files = glob.glob(os.path.join(base_dir, "annos/{}".format(split), '*.json'))
         ids_file = os.path.join(base_dir, 'annos/{}_ids.pth'.format(split))
         assert len(anno_files) > 0
@@ -63,9 +100,12 @@ class Polypcoco_anchorfree(Dataset):
         self.split = split
         sys.stdout = open(os.devnull, "w")
         self.coco_anno_list = [COCO(anno) for anno in anno_files]
+        #print("*"*100)
+        #print(self.coco_anno_list)
+        #print("*"*100)
         sys.stdout = sys.__stdout__
         self.index_to_coco_anno_index = []
-
+        self.tsf = FSTrans(600, 1000)
         self.coco_mask = mask
         if os.path.exists(ids_file):
             cache_file = torch.load(ids_file)
@@ -79,44 +119,74 @@ class Polypcoco_anchorfree(Dataset):
                     self.index_to_coco_anno_index.append([index, key_index])
 
             self.ids_list, self.index_to_coco_anno_index = self._preprocess_anno_list(ids_file)
-
+        #print("="*20, "end init", "="*20)
     def __getitem__(self, index):
+        #print("test get item")
         _img, _target = self._make_img_gt_point_pair(index)
         sample = {'image': _img, 'label': _target}
         augmented_mask = np.array(sample["label"])
         gt_image = sample['image']
         gt_bboxs = self._mask_to_bbox(augmented_mask)
         height, width, channel = gt_image.shape
-        #print(gt_image.shape)
+        
         #print("orig gt_bboxs:", gt_bboxs)
         img_info = [width, height]
+        #print("before transpose: ", gt_image.shape)
+        gt_image = gt_image.transpose(2 , 0 , 1)
+        #print("polyp before transformation: ", gt_image.shape, gt_image)
+        #print("after transpose: ", gt_image.shape)
+
         assert gt_bboxs.shape[0] > 0, 'Empty ground truth bounding box on index {}'.format(index)
-        if self.target_transform is not None:
-            gt_bboxs = self.target_transform(gt_bboxs, width, height)
-        #print("orig2 gt_bboxs:", gt_bboxs)
-        if self.bbox_transform is not None:
-            #if self.split == 'test':
-                #print("gt:", gt_bboxs)
-                #print("gt2:",gt_bboxs[:, :4], gt_bboxs[:, 4])
-            if self.split == 'train':
-                #print("orig3 gt_bboxs:", gt_bboxs)
-                #print(gt_bboxs[:, :4], gt_bboxs[:, 4])
-                gt_image, boxes, labels = self.bbox_transform(gt_image, gt_bboxs[:, :4], gt_bboxs[:, 4])
-                #print("orig4 gt_bboxs:", gt_bboxs)
-                #print("before trans:", gt_image.shape)
-                gt_image = gt_image.transpose(2 , 0 , 1) # convert 300, 300, 3 to 3, 300, 300
-                #print("after trans:", gt_image.shape)
-            else:
-                gt_image, (boxes, labels) = self.bbox_transform(gt_image, (gt_bboxs[:, :4], gt_bboxs[:, 4]))
-                #gt_image = gt_image.permute(2, 0, 1)
-            #print("before trans:", gt_bboxs, "\n", channel, height, width,"\n", "after trans:", boxes)
-            #gt_image, gt_targets = self.bbox_transform(gt_image, gt_bboxs)
-            gt_bboxs = np.hstack((boxes, np.expand_dims(labels, axis=1)))
+        #if self.target_transform is not None:
+        #    gt_bboxs = self.target_transform(gt_bboxs, width, height)
+        ##print("orig2 gt_bboxs:", gt_bboxs)
+        #if self.bbox_transform is not None:
+        #    #if self.split == 'test':
+        #        #print("gt:", gt_bboxs)
+        #        #print("gt2:",gt_bboxs[:, :4], gt_bboxs[:, 4])
+        #    if self.split == 'train':
+        #        #print("orig3 gt_bboxs:", gt_bboxs)
+        #        #print(gt_bboxs[:, :4], gt_bboxs[:, 4])
+        #        gt_image, boxes, labels = self.bbox_transform(gt_image, gt_bboxs[:, :4], gt_bboxs[:, 4])
+        #        #print("orig4 gt_bboxs:", gt_bboxs)
+        #        #print("before trans:", gt_image.shape)
+        #        gt_image = gt_image.transpose(2 , 0 , 1) # convert 300, 300, 3 to 3, 300, 300
+        #        #print("after trans:", gt_image.shape)
+        #    else:
+        #        gt_image, (boxes, labels) = self.bbox_transform(gt_image, (gt_bboxs[:, :4], gt_bboxs[:, 4]))
+        #        #gt_image = gt_image.permute(2, 0, 1)
+        #    #print("before trans:", gt_bboxs, "\n", channel, height, width,"\n", "after trans:", boxes)
+        #    #gt_image, gt_targets = self.bbox_transform(gt_image, gt_bboxs)
+        #    gt_bboxs = np.hstack((boxes, np.expand_dims(labels, axis=1)))
         gt_targets = torch.FloatTensor(gt_bboxs)
         #print("targettype:", gt_targets.shape)
         #print("final:", gt_targets)
-        return torch.from_numpy(np.array(gt_image)).float(), gt_targets, img_info
+        
+        boxes = gt_bboxs[:, :4]
+        #print("before swtich: ", boxes)
+        boxes[:, [0, 1, 2, 3]] = gt_bboxs[:, [1, 0, 3, 2]]
+        #print("switched: ", boxes)
+        #boxes[:, [0, 2]] = boxes[:, [2, 0]]
+        #boxes[:, [1, 2]] = boxes[:, [2, 1]]
+        #boxes[:, [2, 3]] = boxes[:, [3, 2]]
+        #print("polyp before transfomation bbox: ", boxes)
+        labels = gt_bboxs[:, 4]
+        if self.split == 'train':
 
+            #print("input:", gt_image.shape, boxes.shape, labels.shape)
+            #print("intput box:", boxes)
+            img, bbox, label, scale = self.tsf((gt_image, boxes, labels))
+            #print("out", img.shape, bbox.shape, label.shape, scale)
+            #print("polyp after transformation: ", img.shape, img)
+            #print("polyp after transformation bbox: ", bbox.shape, bbox)
+            #print(bbox, label)
+            # return torch.from_numpy(np.array(gt_image)).float(), gt_targets, img_info
+            return img.copy(), bbox.copy(), label.copy(), scale
+        else:
+            img = preprocess(gt_image)
+            difficult = np.asarray([0] * len(labels))
+            return img, gt_image.shape[1:], boxes, labels, difficult
+        
     def _mask_to_bbox(self, coco_mask):
         class_id = np.unique(coco_mask)
         bboxs = []
@@ -213,62 +283,3 @@ class Polypcoco_anchorfree(Dataset):
 
     def __len__(self):
         return len(self.index_to_coco_anno_index)
-
-if __name__ == "__main__":
-
-    from dataloader.dataloader_utils import decode_segmap
-    from torch.utils.data import DataLoader
-    from torchvision import transforms
-    import matplotlib.pyplot as plt
-    import argparse
-    from config import cfg
-    import cv2
-    from model.anchor_free import detection_collate_anchorfree
-    from model.anchor_free.augmentations import SSDAugmentation
-    from utils.timer import Timer
-
-    timer = Timer()
-    bbox_transform = SSDAugmentation(size=500, mean=(0, 0, 0))
-
-    # bbox_transform = None
-    coco_val = Polypcoco_anchorfree(cfg, "/home/dwang/data0/SynologyDrive/dataset/xiangya",
-                                    bbox_transform=bbox_transform, split='train')
-
-    # dataloader = DataLoader(coco_val, batch_size=1, shuffle=True, num_workers=0,collate_fn=detection_collate_anchorfree)
-    dataloader = DataLoader(coco_val, batch_size=1, shuffle=True, num_workers=0)
-    # rgb
-    color = [(255, 0, 0),  # ren,
-             (0, 255, 0)  # green,
-             ]
-    timer.tic()
-    for ii, sample in enumerate(dataloader):
-        print('data loader time {}'.format(timer.toc()))
-        images = sample[0]
-        targets = sample[1]
-        # augmented_mask = sample[2]
-        for i in range(images.shape[0]):
-            image = images[i].permute(1, 2, 0).numpy().astype(np.uint8).copy()
-            height, width, channel = image.shape
-            target = targets[i].numpy()
-            target[:, 0:4:2] *= width
-            target[:, 1:4:2] *= height
-            for t in target:
-                pt1 = tuple([int(t[0]), int(t[1])])
-                pt2 = tuple([int(t[2]), int(t[3])])
-                cls = int(t[4])
-                cv2.rectangle(image, pt1, pt2, color[cls - 1], thickness=2)
-            # tmp=np.array(augmented_mask[i].numpy()).astype(np.uint8)
-            # segmap = decode_segmap(tmp, dataset='coco')
-            plt.figure(figsize=(10, 10))
-            plt.title('display')
-            plt.subplot(211)
-            plt.imshow(image)
-        # plt.subplot(212)
-        # plt.imshow(segmap)
-
-        timer.tic()
-
-        if ii == 20:
-            break
-
-    plt.show(block=True)

@@ -164,9 +164,33 @@ def calc_detection_voc_prec_rec(
             gt_difficult = np.zeros(gt_bbox.shape[0], dtype=bool)
 
         for l in np.unique(np.concatenate((pred_label, gt_label)).astype(int)):
+            print("np.unique: ", np.unique(np.concatenate((pred_label, gt_label)).astype(int)))
+            print("gt_bboxes:", gt_bbox, "\n")
+            print("*" * 50)
+            print("gt_labels:", gt_label, "\n")
+            print("*" * 50)
+            print("gt_difficult:", gt_difficult, "\n")
+            print("*" * 50)
+
+
+
+            print("pred_bboxes:", pred_bboxes, "\n")
+            print("*" * 50)
+            print("pred_label:", pred_label, "\n")
+            print("*" * 50)
+            print("pred_scores:", pred_scores, "\n")
+            print("*" * 50)
+            print("l: ", l, "\n")
+            print('*' * 50)
             pred_mask_l = pred_label == l
+            print("pred_mask_l:", pred_mask_l, "\n")
+            print("*" * 50)
             pred_bbox_l = pred_bbox[pred_mask_l]
+            print("pred_bbox_l:", pred_bbox_l, "\n")
+            print("*" * 50)
             pred_score_l = pred_score[pred_mask_l]
+            print("pred_score_l:", pred_score_l, "\n")
+            print("*" * 50)
             # sort by score
             order = pred_score_l.argsort()[::-1]
             pred_bbox_l = pred_bbox_l[order]
@@ -176,7 +200,18 @@ def calc_detection_voc_prec_rec(
             gt_bbox_l = gt_bbox[gt_mask_l]
             gt_difficult_l = gt_difficult[gt_mask_l]
 
+            print("gt_mask_l:", gt_mask_l, "\n")
+            print("*" * 50)
+            print("gt_bbox_l:", gt_bbox_l, "\n")
+            print("*" * 50)
+            print("gt_difficults_l:", gt_difficult_l, "\n")
+            print("*" * 50)
+
             n_pos[l] += np.logical_not(gt_difficult_l).sum()
+            print("n_pos[l]: ", n_pos[l])
+            print("*" * 50)
+            print("n_pos:", n_pos, "\n")
+            print("*" * 100)
             score[l].extend(pred_score_l)
 
             if len(pred_bbox_l) == 0:
@@ -218,6 +253,7 @@ def calc_detection_voc_prec_rec(
             raise ValueError('Length of input iterables need to be same.')
 
     n_fg_class = max(n_pos.keys()) + 1
+    print('n_fg_class: ', n_fg_class)
     prec = [None] * n_fg_class
     rec = [None] * n_fg_class
 
@@ -237,7 +273,7 @@ def calc_detection_voc_prec_rec(
         # If n_pos[l] is 0, rec[l] is None.
         if n_pos[l] > 0:
             rec[l] = tp / n_pos[l]
-
+    print("prec: ", prec, "rec: ", rec)
     return prec, rec
 
 

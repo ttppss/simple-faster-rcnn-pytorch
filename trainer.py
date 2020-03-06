@@ -59,7 +59,7 @@ class FasterRCNNTrainer(nn.Module):
 
         # indicators for training status
         self.rpn_cm = ConfusionMeter(2)
-        self.roi_cm = ConfusionMeter(21)
+        self.roi_cm = ConfusionMeter(3)
         self.meters = {k: AverageValueMeter() for k in LossTuple._fields}  # average loss
 
     def forward(self, imgs, bboxes, labels, scale):
@@ -88,6 +88,7 @@ class FasterRCNNTrainer(nn.Module):
             namedtuple of 5 losses
         """
         n = bboxes.shape[0]
+        print("bboes: ", bboxes)
         if n != 1:
             raise ValueError('Currently only batch size 1 is supported.')
 
@@ -100,11 +101,12 @@ class FasterRCNNTrainer(nn.Module):
             self.faster_rcnn.rpn(features, img_size, scale)
 
         # Since batch size is one, convert variables to singular form
-        bbox = bboxes[0]
+        bbox = bboxes[0].tolist()
         label = labels[0]
         rpn_score = rpn_scores[0]
         rpn_loc = rpn_locs[0]
         roi = rois
+        print("roi: ", roi, "roi shape: ", roi.shape)
 
         # Sample RoIs and forward
         # it's fine to break the computation graph of rois, 
