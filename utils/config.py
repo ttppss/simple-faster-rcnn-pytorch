@@ -10,7 +10,7 @@ class Config:
     voc_data_dir = '/data2/dechunwang/dataset/'
     min_size = 600  # image resize
     max_size = 1000 # image resize
-    num_workers = 0
+    num_workers = 8
     test_num_workers = 8
 
     # sigma for l1_smooth_loss

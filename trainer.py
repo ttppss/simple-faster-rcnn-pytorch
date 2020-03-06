@@ -101,11 +101,12 @@ class FasterRCNNTrainer(nn.Module):
             self.faster_rcnn.rpn(features, img_size, scale)
 
         # Since batch size is one, convert variables to singular form
-        bbox = bboxes[0].tolist()
+        bbox = bboxes[0]
         label = labels[0]
         rpn_score = rpn_scores[0]
         rpn_loc = rpn_locs[0]
         roi = rois
+        print("bbox before roi: ", bbox, bbox.shape)
         print("roi: ", roi, "roi shape: ", roi.shape)
 
         # Sample RoIs and forward

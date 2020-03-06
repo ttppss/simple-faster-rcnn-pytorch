@@ -99,8 +99,8 @@ def train(**kwargs):
     # for i, sample_image in enumerate(dataloader):
     #     print("data loader output: ", sample_image)
 
-    #testset = TestDataset(opt)
-    testset = Polypcoco_anchorfree('/data2/dechunwang/dataset', split='test')
+    testset = TestDataset(opt)
+    #testset = Polypcoco_anchorfree('/data2/dechunwang/dataset', split='test')
     test_dataloader = data_.DataLoader(testset,
                                        batch_size=1,
                                        num_workers=opt.test_num_workers,
@@ -126,7 +126,13 @@ def train(**kwargs):
             # bbox_ = torch.FloatTensor(bbox_)
             # print("bbox_ shape: ", bbox_.shape)
             # label_ = torch.FloatTensor(label_)
+            print("*" * 100)
+            print("bbox before tocuda: ", bbox_, bbox_.shape)
+            print("*" * 100)
             img, bbox, label = img.cuda().float(), bbox_.cuda(), label_.cuda()
+            print("*" * 100)
+            print("bbox before trainer.step: ", bbox, bbox.shape)
+            print("*" * 100)
             #print(img.shape)
             trainer.train_step(img, bbox, label, scale)
 

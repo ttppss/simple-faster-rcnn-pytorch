@@ -92,14 +92,15 @@ class Transform(object):
         # TODO change the defenition of scale.
         # warning: might have issue.
         scale = o_H / H
-        # print("bbox pre: ", bbox)
+        print("bbox pre: ", bbox)
         bbox = util.resize_bbox(bbox, (H, W), (o_H, o_W))
-        # print("bbox after: ", bbox)
+        print("bbox after: ", bbox)
         # horizontally flip
         img, params = util.random_flip(
             img, x_random=True, return_param=True)
         bbox = util.flip_bbox(
             bbox, (o_H, o_W), x_flip=params['x_flip'])
+        print("bbox after flip: ", bbox, bbox.shape)
 
         return img, bbox, label, scale
 
@@ -112,13 +113,15 @@ class Dataset:
 
     def __getitem__(self, idx):
         ori_img, bbox, label, difficult = self.db.get_example(idx)
-        # print("voc input: ", ori_img, bbox, label)
+        print("dataset getitem input: ", bbox, bbox.shape)
         # print("difficult", type(difficult), difficult, difficult.shape)
         img, bbox, label, scale = self.tsf((ori_img, bbox, label))
-        # print("voc ouptut:", img, bbox, label)
-        # print(bbox, label)
+
+        #print(bbox, label)
+
         # TODO: check whose stride is negative to fix this instead copy all
         # some of the strides of a given numpy array are negative.
+        #print("Dataset copied output:", bbox.copy(), bbox.copy().shape)
         return img.copy(), bbox.copy(), label.copy(), scale
 
     def __len__(self):
