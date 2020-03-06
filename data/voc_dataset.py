@@ -76,6 +76,10 @@ class VOCBboxDataset:
         id_list_file = os.path.join(
             data_dir, 'ImageSets/Main/{0}.txt'.format(split))
 
+
+        self.json_anno = json.load(open(os.path.join(data_dir,"polyp_large_train_annots.json")))
+
+
         self.ids = [id_.strip() for id_ in open(id_list_file)]
         self.data_dir = data_dir
         self.use_difficult = use_difficult
@@ -83,8 +87,8 @@ class VOCBboxDataset:
         self.label_names = VOC_BBOX_LABEL_NAMES
 
     def __len__(self):
-        return len(self.ids)
-
+        #return len(self.ids)
+        return len(self.json_anno)
     def get_example(self, i):
         """Returns the i-th example.
 
@@ -98,6 +102,21 @@ class VOCBboxDataset:
             tuple of an image and bounding boxes
 
         """
+        
+        #################
+        im_info = self.json_anno[i]
+        img_file = os.path.join(self.data_dir,im_info["filename"])
+        img = read_image(img_file,color=True)
+        
+        difficult = np.array([0]*len(im_info["gt_bboxes"]), dtype=np.bool).astype(np.uint8)
+        bbox=[]
+        for box in im_info["gt_bboxes"]:
+            bbox.append([box[1],box[0],box[3],box[2]])
+        label = [1]*len(im_info["gt_bboxes"])           
+        bbox = np.stack(bbox).astype(np.float32)
+        label = np.stack(label).astype(np.int32)        
+        #################
+
         id_ = self.ids[i]
         anno = ET.parse(
             os.path.join(self.data_dir, 'Annotations', id_ + '.xml'))
