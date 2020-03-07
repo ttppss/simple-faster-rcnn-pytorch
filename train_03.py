@@ -78,7 +78,7 @@ def eval(dataloader, faster_rcnn, test_num, thresh = 0.01):
         gt_bboxes, gt_labels, gt_difficults,
         use_07_metric=True)
     #print("detect time: ", time.time() - st)
-    #print("precision and recall: ", result)
+    print("precision and recall: ", result)
     return result
 
 
