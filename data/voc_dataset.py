@@ -75,8 +75,9 @@ class VOCBboxDataset:
         #         )
         # id_list_file = os.path.join(
         #     data_dir, 'ImageSets/Main/{0}.txt'.format(split))
+        self.split = split
 
-        if split == "train":
+        if self.split == "train":
             self.json_anno = json.load(open(os.path.join(data_dir, "large_dataset/polyp_large_train_annots.json")))
         else:
             self.json_anno = json.load(open(os.path.join(data_dir, "polyp_cvc_test.json")))
@@ -108,7 +109,11 @@ class VOCBboxDataset:
 
         #################
         im_info = self.json_anno[i]
-        img_file = os.path.join(self.data_dir, "large_dataset", im_info["filename"])
+        if self.split == 'train':
+            img_file = os.path.join(self.data_dir, "large_dataset", im_info["filename"])
+        else:
+            img_file = os.path.join(self.data_dir, im_info["filename"])
+
         img = read_image(img_file, color=True)
 
         difficult = np.array([0] * len(im_info["gt_bboxes"]), dtype=np.bool).astype(np.uint8)
