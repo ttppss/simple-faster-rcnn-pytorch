@@ -174,6 +174,7 @@ class FasterRCNNTrainer(nn.Module):
         losses.total_loss.backward()
         self.optimizer.step()
         self.update_meters(losses)
+        print("trainer.train_step.loss: ", losses)
         return losses
 
     def save(self, save_optimizer=False, save_path=None, **kwargs):

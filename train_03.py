@@ -136,6 +136,7 @@ def train(**kwargs):
             #print(img.shape)
             trainer.train_step(img, bbox, label, scale)
 
+
             if (ii + 1) % opt.plot_every == 0:
                 if os.path.exists(opt.debug_file):
                     ipdb.set_trace()
@@ -170,6 +171,7 @@ def train(**kwargs):
                                                   str(eval_result['map']),
                                                   str(trainer.get_meter_data()))
         #trainer.vis.log(log_info)
+        print("log info: ", log_info)
 
         if eval_result['map'] > best_map:
             best_map = eval_result['map']
