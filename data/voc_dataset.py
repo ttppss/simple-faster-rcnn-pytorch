@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 
 import numpy as np
 import json
+import imageio
 
 from .util import read_image
 
@@ -114,7 +115,7 @@ class VOCBboxDataset:
         else:
             img_file = os.path.join(self.data_dir, im_info["filename"])
 
-        img = read_image(img_file, color=True)
+        img = imageio.imread(img_file).transpose(2 , 0 , 1)
 
         difficult = np.array([0] * len(im_info["gt_bboxes"]), dtype=np.bool).astype(np.uint8)
         bbox = list()
