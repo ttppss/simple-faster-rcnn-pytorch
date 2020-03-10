@@ -36,7 +36,9 @@ def eval(dataloader, model, test_num):
 
                 print("img shape: ", imgs.shape)
                 print("pred_bbox_: ", pred_bboxes_)
+                print("pred_bbox_.shape: ", pred_bboxes_.shape)
                 print("gt_bboxes_: ", gt_bboxes_)
+                print("gt_bboxes_ shape: ", gt_bboxes_.shape)
 
                 img = draw_func(imgs, gt_bboxes_, pred_bboxes_)
 
