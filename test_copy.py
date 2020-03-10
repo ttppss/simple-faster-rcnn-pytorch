@@ -36,15 +36,15 @@ def eval(dataloader, model, test_num):
 
 
 
-                print("img shape: ", imgs.shape)
-                print("pred_bbox_: ", pred_bboxes_)
-                print("pred_bbox_.shape: ", len(pred_bboxes_))
-                print("gt_bboxes_: ", gt_bboxes_)
-                print("gt_bboxes_ shape: ", len(gt_bboxes_))
-                print("gt_bboxes_[0][0]", gt_bboxes_[0][0])
+                # print("img shape: ", imgs.shape)
+                # print("pred_bbox_: ", pred_bboxes_)
+                # print("pred_bbox_.shape: ", len(pred_bboxes_))
+                # print("gt_bboxes_: ", gt_bboxes_)
+                # print("gt_bboxes_ shape: ", len(gt_bboxes_))
+                # print("gt_bboxes_[0][0]", gt_bboxes_[0][0])
 
                 img = draw_func(imgs, gt_bboxes_, pred_bboxes_)
-
+                print("img after draw: ", img)
                 cv2.imwrite('/data1/zinan/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
                 if ii == test_num: break
@@ -85,15 +85,15 @@ def draw_func(imgs, gt_bboxes, pred_bboxes_):
     pred_bboxes_ = pred_bboxes_
     for pt in gt_bboxes:
         pt1 = (int(pt[0]), int(pt[1]))
-        print("pt1: ", pt1)
+        # print("pt1: ", pt1)
         pt2 = (int(pt[2]), int(pt[3]))
-        print("pt2: ", pt2)
-        print("imgs:", imgs)
+        # print("pt2: ", pt2)
+        # print("imgs:", imgs)
         cv2.rectangle(imgs, pt1, pt2, (153, 51, 255), 2)
 
     for pred_bbox in pred_bboxes_:
         pred_bbox[:, [0, 1, 2, 3]] = pred_bbox[:, [1, 0, 3, 2]]
-        print("pred_bbox after: ", pred_bbox)
+        # print("pred_bbox after: ", pred_bbox)
         for pt in pred_bbox:
             pt1 = (pt[0], pt[1])
             pt2 = (pt[2], pt[3])
@@ -112,6 +112,7 @@ def main():
         print('model construct completed')
         if not os.path.isdir('/data1/zinan/fasterrcnn_result_image/'):
             os.makedirs('/data1/zinan/fasterrcnn_result_image/')
+
         testset = Polypcoco_anchorfree('/data1/zinan/xiangya_backup', split='test')
         test_dataloader = data_.DataLoader(testset,
                                            batch_size=1,
