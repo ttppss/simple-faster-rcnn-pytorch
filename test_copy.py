@@ -80,7 +80,7 @@ def eval(dataloader, model, test_num):
 
 def draw_func(imgs, gt_bboxes, pred_bboxes_):
     imgs = imgs
-    gt_bboxes = torch.squeeze(gt_bboxes)
+    gt_bboxes = gt_bboxes[0][0]
     pred_bboxes_ = pred_bboxes_
     for pt in gt_bboxes:
         pt1 = (pt[0], pt[1])
