@@ -81,7 +81,7 @@ def eval(dataloader, model, test_num):
 
 def draw_func(imgs, gt_bboxes, pred_bboxes_):
     imgs = imgs
-    gt_bboxes = gt_bboxes.tolist()[0][0]
+    gt_bboxes = gt_bboxes[0][0].tolist()
     pred_bboxes_ = pred_bboxes_
     for pt in gt_bboxes:
         pt1 = (pt[0], pt[1])
