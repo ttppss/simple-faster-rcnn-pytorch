@@ -34,7 +34,7 @@ def eval(dataloader, model, test_num):
                 pred_labels += pred_labels_
                 pred_scores += pred_scores_
 
-                print("img shape: ", img.shape)
+                print("img shape: ", imgs.shape)
                 print("pred_bbox_: ", pred_bboxes_)
                 print("gt_bboxes_: ", gt_bboxes_)
 
