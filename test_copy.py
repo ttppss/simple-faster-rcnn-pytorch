@@ -92,9 +92,6 @@ def draw_func(imgs, gt_bboxes, pred_bboxes_):
         cv2.rectangle(imgs, pt1, pt2, (153, 51, 255), 2)
 
     for pred_bbox in pred_bboxes_:
-        print("pred_bbox before: ", pred_bbox)
-        for pt in pred_bbox:
-            pred_bbox.append([pt[1], pt[0], pt[3], pt[2]])
         pred_bbox[:, [0, 1, 2, 3]] = pred_bbox[:, [1, 0, 3, 2]]
         print("pred_bbox after: ", pred_bbox)
         for pt in pred_bbox:
