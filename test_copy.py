@@ -36,31 +36,31 @@ def eval(dataloader, model, test_num):
 
                 print("img shape: ", imgs.shape)
                 print("pred_bbox_: ", pred_bboxes_)
-                print("pred_bbox_.shape: ", pred_bboxes_.shape)
+                print("pred_bbox_.shape: ", len(pred_bboxes_))
                 print("gt_bboxes_: ", gt_bboxes_)
-                print("gt_bboxes_ shape: ", gt_bboxes_.shape)
+                print("gt_bboxes_ shape: ", len(gt_bboxes_))
 
                 img = draw_func(imgs, gt_bboxes_, pred_bboxes_)
 
-                cv2.imwrite('/data1/zinan/fasterrcnn_result_image//{}.jpg'.format(ii), img)
+                cv2.imwrite('/data1/zinan/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
                 if ii == test_num: break
             # print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ",
             # pred_scores)
-            eval = Metric(visualize=False, visualization_root=None)
-            for i in range(len(pred_bboxes)):
-                pred_bbox = pred_bboxes[i]
-                target_bbox = gt_bboxes[i]
-                pred_score = pred_scores[i]
-                pred_list = []
-                target_list = []
-                combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
-                # print(combination_bbox_score)
-                for j in range(len(pred_bbox)):
-                    if combination_bbox_score[0][2] > thresh:
-                        pred_list.append(combination_bbox_score[0][0])
-                        target_list.append(combination_bbox_score[0][1])
-                image = None
+            # eval = Metric(visualize=False, visualization_root=None)
+            # for i in range(len(pred_bboxes)):
+            #     pred_bbox = pred_bboxes[i]
+            #     target_bbox = gt_bboxes[i]
+            #     pred_score = pred_scores[i]
+            #     pred_list = []
+            #     target_list = []
+            #     combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
+            #     # print(combination_bbox_score)
+            #     for j in range(len(pred_bbox)):
+            #         if combination_bbox_score[0][2] > thresh:
+            #             pred_list.append(combination_bbox_score[0][0])
+            #             target_list.append(combination_bbox_score[0][1])
+            #     image = None
             # eval.eval_add_result(target_list, pred_list,image=image, image_name=i)
         # precision, recall, pred_bbox_count = eval.get_result()
         # F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
