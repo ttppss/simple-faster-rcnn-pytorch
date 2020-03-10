@@ -34,6 +34,8 @@ def eval(dataloader, model, test_num):
                 pred_labels += pred_labels_
                 pred_scores += pred_scores_
 
+
+
                 print("img shape: ", imgs.shape)
                 print("pred_bbox_: ", pred_bboxes_)
                 print("pred_bbox_.shape: ", len(pred_bboxes_))
@@ -78,7 +80,7 @@ def eval(dataloader, model, test_num):
 
 def draw_func(imgs, gt_bboxes, pred_bboxes_):
     imgs = imgs
-    gt_bboxes = gt_bboxes
+    gt_bboxes = torch.squeeze(gt_bboxes)
     pred_bboxes_ = pred_bboxes_
     for pt in gt_bboxes:
         pt1 = (pt[0], pt[1])
