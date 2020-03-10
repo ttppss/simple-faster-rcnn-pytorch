@@ -86,7 +86,7 @@ def draw_func(imgs, gt_bboxes, pred_bboxes_):
     for pt in gt_bboxes:
         pt1 = (pt[0], pt[1])
         pt2 = (pt[2], pt[3])
-    cv2.rectangle(imgs, pt1, pt2, color='red', thickness=2)
+    cv2.rectangle(imgs, pt1, pt2, color=(153, 51, 255), thickness=2)
 
     for pred_bbox in pred_bboxes_:
         print("pred_bbox before: ", pred_bbox)
@@ -95,7 +95,7 @@ def draw_func(imgs, gt_bboxes, pred_bboxes_):
         for pt in pred_bbox:
             pt1 = (pt[0], pt[1])
             pt2 = (pt[2], pt[3])
-        cv2.rectangle(imgs, pt1, pt2, color='green', thickness=2)
+        cv2.rectangle(imgs, pt1, pt2, color=(255, 255, 0), thickness=2)
 
         return imgs
 
