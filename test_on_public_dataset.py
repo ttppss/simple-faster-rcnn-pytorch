@@ -17,16 +17,16 @@ import pickle
 
 def eval(dataloader, model, test_num):
 	with torch.no_grad():
-		for thresh in np.linspace(0.2, 0.9, 7):
+		for thresh in np.linspace(0.2, 0.95, 7):
 			model.eval()
 			pred_bboxes, pred_labels, pred_scores = list(), list(), list()
 			gt_bboxes, gt_labels, gt_difficults = list(), list(), list()
 			for ii, (imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
-				#print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
-				#print("gt_labesl shape: ", gt_labels_)
+				print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
+				print("gt_labesl shape: ", gt_labels_)
 				sizes = [sizes[0][0].item(), sizes[1][0].item()]
 				pred_bboxes_, pred_labels_, pred_scores_ = model.predict(imgs, [sizes])
-				#print("pred_bboxes: ", pred_bboxes_, "\n", "pred_labels: ", pred_labels_, "\n", "pred_scores: ", pred_scores_)
+				print("pred_bboxes: ", pred_bboxes_, "\n", "pred_labels: ", pred_labels_, "\n", "pred_scores: ", pred_scores_)
 				gt_bboxes += list(gt_bboxes_.numpy())
 				gt_labels += list(gt_labels_.numpy())
 				gt_difficults += list(gt_difficults_.numpy())
@@ -34,7 +34,7 @@ def eval(dataloader, model, test_num):
 				pred_labels += pred_labels_
 				pred_scores += pred_scores_
 				if ii == test_num: break
-			#print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
+			print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
 			eval = Metric(visualize=False, visualization_root=None)
 			for i in range(len(pred_bboxes)):
 				pred_bbox = pred_bboxes[i]
@@ -43,7 +43,7 @@ def eval(dataloader, model, test_num):
 				pred_list = []
 				target_list = []
 				combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
-				#print(combination_bbox_score)
+				print(combination_bbox_score)
 				for j in range(len(pred_bbox)):
 					if combination_bbox_score[0][2] > thresh:
 						pred_list.append(combination_bbox_score[0][0])
@@ -74,7 +74,7 @@ def main():
         faster_rcnn = FasterRCNNVGG16().cuda()
         print('model construct completed')
         
-        testset = TestDataset('/data2/dechunwang/dataset/', split='test')
+        testset = TestDataset(opt, split='test')
         test_dataloader = data_.DataLoader(testset,
                                        batch_size=1,
                                        num_workers=opt.test_num_workers,

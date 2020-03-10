@@ -114,6 +114,7 @@ class VOCBboxDataset:
             img_file = os.path.join(self.data_dir, "large_dataset", im_info["filename"])
         else:
             img_file = os.path.join(self.data_dir, im_info["filename"])
+            print("img_file: ", img_file)
 
         img = imageio.imread(img_file).transpose(2 , 0 , 1)
 
