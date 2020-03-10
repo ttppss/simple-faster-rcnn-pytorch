@@ -96,10 +96,10 @@ class Polypcoco_anchorfree(Dataset):
 
         # minimum mask size
         self.mask_min_size = 100
-        self.img_dir = os.path.join(base_dir, "large_dataset/Original/")
+        self.img_dir = os.path.join(base_dir, "images/")
         self.split = split
         sys.stdout = open(os.devnull, "w")
-        self.coco_anno_list = COCO(anno_files)
+        self.coco_anno_list = [COCO(anno) for anno in anno_files]
         # print("*"*100)
         # print(self.coco_anno_list)
         # print("*"*100)
