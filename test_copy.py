@@ -96,7 +96,8 @@ def main():
     if model_path:
         faster_rcnn = FasterRCNNVGG16().cuda()
         print('model construct completed')
-        os.makedirs('/data1/zinan/fasterrcnn_result_image/')
+        if not os.path.isdir('/data1/zinan/fasterrcnn_result_image/'):
+            os.makedirs('/data1/zinan/fasterrcnn_result_image/')
         testset = Polypcoco_anchorfree('/data1/zinan/xiangya_backup', split='test')
         test_dataloader = data_.DataLoader(testset,
                                        batch_size=1,
