@@ -2,12 +2,11 @@
 <project version="4">
   <component name="WebServers">
     <option name="servers">
-      <webServer id="0f35eaef-e1ef-4c26-ba4a-e221ece46d52" name="129.63.16.60" url="http://129.63.16.60">
-        <fileTransfer host="129.63.16.60" port="22" rootFolder="/data0/zinan_xiong" accessType="SFTP">
+      <webServer id="71e56ce7-13b9-4858-804f-19f8803ce26b" name="129.63.16.60">
+        <fileTransfer accessType="SFTP" host="129.63.16.60" port="22" sshConfigId="7d10dde4-6018-47e6-ae34-25cd320d9612" sshConfig="129.63.16.60">
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
           </advancedOptions>
-          <option name="port" value="22" />
         </fileTransfer>
       </webServer>
     </option>

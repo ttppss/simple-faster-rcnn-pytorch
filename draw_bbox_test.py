@@ -113,7 +113,7 @@ def main():
         print('model construct completed')
 
         # TODO: need to change the dir, and the dataloader structure, to get the file from the correct dir.
-        testset = TempDataset('/data1/zinan/xiangya_backup', split='temp')
+        testset = TestDataset('/data1/zinan/xiangya_backup', split='test')
         test_dataloader = data_.DataLoader(testset,
                                            batch_size=1,
                                            num_workers=opt.test_num_workers,

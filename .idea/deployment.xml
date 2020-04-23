@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" serverName="129.63.16.60" showExcludedInSync="true">
+  <component name="PublishConfigData" showExcludedInSync="true">
     <serverData>
       <paths name="129.63.16.60">
         <serverdata>
           <mappings>
-            <mapping deploy="/simple-faster-rcnn-pytorch" local="$PROJECT_DIR$" web="/" />
+            <mapping deploy="/data1/zinan/simple-faster-rcnn-pytorch" local="$PROJECT_DIR$" web="/" />
           </mappings>
         </serverdata>
       </paths>
