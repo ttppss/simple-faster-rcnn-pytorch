@@ -41,23 +41,23 @@ def eval(dataloader, model, test_num):
             if ii == test_num: break
 
 
-def draw_func(self, imgs, gt_bboxes, pred_bboxes_):
-    self.imgs = imgs
-    self.gt_bboxes = gt_bboxes
-    self.pred_bboxes_ = pred_bboxes_
-    for pt in self.gt_bboxes:
+def draw_func(imgs, gt_bboxes, pred_bboxes_):
+    imgs = imgs
+    gt_bboxes = gt_bboxes
+    pred_bboxes_ = pred_bboxes_
+    for pt in gt_bboxes:
         pt1 = (pt[0], pt[1])
         pt2 = (pt[2], pt[3])
-    cv2.rectangle(self.imgs, pt1, pt2, color='red', thickness=2)
+    cv2.rectangle(imgs, pt1, pt2, color='red', thickness=2)
 
-    for pred_bbox in self.pred_bboxes_:
+    for pred_bbox in pred_bboxes_:
         pred_bbox = pred_bbox[1, 0, 3, 2]
         for pt in pred_bbox:
             pt1 = (pt[0], pt[1])
             pt2 = (pt[2], pt[3])
-        cv2.rectangle(self.imgs, pt1, pt2, color='green', thickness=2)
+        cv2.rectangle(imgs, pt1, pt2, color='green', thickness=2)
 
-        return self.imgs
+        return imgs
 
         # # print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
         # eval = Metric(visualize=False, visualization_root=None)
