@@ -107,7 +107,9 @@ def main():
     model_path = '/data1/zinan/simple-faster-rcnn-pytorch/checkpoints/saved/fasterrcnn_01270054'
     # model_path = glob.glob(os.path.join(base_dir, '*.pth'))
     # print(model_path)
-    os.makedirs('/data0/zinan_xiong/fasterrcnn_result_image/')
+    image_save_path = '/data0/zinan_xiong/fasterrcnn_result_image/'
+    if not os.path.isfile(image_save_path):
+        os.makedirs(image_save_path)
     if model_path:
         faster_rcnn = FasterRCNNVGG16().cuda()
         print('model construct completed')
@@ -117,7 +119,7 @@ def main():
         test_dataloader = data_.DataLoader(testset,
                                            batch_size=1,
                                            num_workers=opt.test_num_workers,
-                                           shuffle=False, \
+                                           shuffle=False,
                                            pin_memory=True
                                            )
         # model = trainer.load_state_dict(torch.load(model_path)['model'])
