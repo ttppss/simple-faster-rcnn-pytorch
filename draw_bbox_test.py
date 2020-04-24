@@ -2,7 +2,7 @@ from __future__ import absolute_import
 import os, glob
 from utils.config import opt
 from data.voc_dataset import VOCBboxDataset
-from data.dataset import Dataset, TestDataset, inverse_normalize, TempDataset
+from data.dataset import Dataset, TestDataset, inverse_normalize  # , TempDataset
 from model import FasterRCNNVGG16
 from torch.utils import data as data_
 from trainer import FasterRCNNTrainer
@@ -40,6 +40,7 @@ def eval(dataloader, model, test_num):
 
             if ii == test_num: break
 
+
 def draw_func(self, imgs, gt_bboxes, pred_bboxes_):
     self.imgs = imgs
     self.gt_bboxes = gt_bboxes
@@ -54,10 +55,9 @@ def draw_func(self, imgs, gt_bboxes, pred_bboxes_):
         for pt in pred_bbox:
             pt1 = (pt[0], pt[1])
             pt2 = (pt[2], pt[3])
-        cv2.rectangle(self.imgs, pt1, pt2, color = 'green', thickness=2)
+        cv2.rectangle(self.imgs, pt1, pt2, color='green', thickness=2)
 
         return self.imgs
-
 
         # # print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
         # eval = Metric(visualize=False, visualization_root=None)
@@ -125,7 +125,7 @@ def main():
         # model = trainer.load_state_dict(torch.load(model_path)['model'])
         state_dict = torch.load(model_path)
         faster_rcnn.load_state_dict(state_dict['model'])
-        evaluation_result = eval(test_dataloader, faster_rcnn, len(testset))
+        eval(test_dataloader, faster_rcnn, len(testset))
 
 
 if __name__ == '__main__':
