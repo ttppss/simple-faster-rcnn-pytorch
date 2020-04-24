@@ -108,7 +108,7 @@ def main():
     # model_path = glob.glob(os.path.join(base_dir, '*.pth'))
     # print(model_path)
     image_save_path = '/data0/zinan_xiong/fasterrcnn_result_image/'
-    if not os.path.isfile(image_save_path):
+    if not os.path.exists(image_save_path):
         os.makedirs(image_save_path)
     if model_path:
         faster_rcnn = FasterRCNNVGG16().cuda()
