@@ -104,7 +104,7 @@ def draw_func(self, imgs, gt_bboxes, pred_bboxes_):
 
 
 def main():
-    model_path = '/data1/zinan/simple-faster-rcnn-pytorch/checkpoints/saved/fasterrcnn_01270054'
+    model_path = '/data1/zinan_xiong/simple-faster-rcnn-pytorch/checkpoints/saved/fasterrcnn_01270054'
     # model_path = glob.glob(os.path.join(base_dir, '*.pth'))
     # print(model_path)
     image_save_path = '/data0/zinan_xiong/fasterrcnn_result_image/'
