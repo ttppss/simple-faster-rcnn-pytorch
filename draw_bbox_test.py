@@ -56,15 +56,9 @@ def draw_func(imgs, gt_bboxes, pred_bboxes_):
     for pred_bbox in pred_bboxes_:
         # print('pred_bbox: ', pred_bbox, 'pred_bbox shape: ', pred_bbox.shape)
         for pb in pred_bbox:
-            print('pb: ', pb)
-            pred_b = list()
-            for box in pb:
-                print('box: ', box)
-                pred_b.append([box[1], box[0], box[3], box[2]])
-            for pt in pred_b:
-                pt1 = (int(pt[0].item()), int(pt[1].item()))
-                pt2 = (int(pt[2].item()), int(pt[3].item()))
-                cv2.rectangle(imgs, pt1, pt2, (0,255,0), 2)
+            pt1 = (int(pb[0].item()), int(pb[1].item()))
+            pt2 = (int(pb[2].item()), int(pb[3].item()))
+            cv2.rectangle(imgs, pt1, pt2, (0,255,0), 2)
 
         return imgs
 
