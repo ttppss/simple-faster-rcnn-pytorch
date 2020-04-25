@@ -40,9 +40,10 @@ def eval(dataloader, model, test_num):
 
 
             ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
-            img = draw_func(ori_img_, gt_bboxes_, pred_bboxes_)
-
-            cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
+            cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
+            # img = draw_func(ori_img_, gt_bboxes_, pred_bboxes_)
+            #
+            # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
             if ii == test_num: break
 
