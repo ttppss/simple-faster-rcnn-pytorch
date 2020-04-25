@@ -15,15 +15,15 @@ import time
 import pickle
 
 
-def eval(dataloader, drawloader, model, test_num):
+def eval(dataloader, model, test_num):
     with torch.no_grad():
         thresh = 0.9
         model.eval()
         pred_bboxes, pred_labels, pred_scores = list(), list(), list()
         gt_bboxes, gt_labels, gt_difficults = list(), list(), list()
-        draw_dataset = list()
-        for iii, img in enumerate(drawloader):
-            draw_dataset.append(img)
+        # draw_dataset = list()
+        # for iii, img in enumerate(drawloader):
+        #     draw_dataset.append(img)
         for ii, (imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
             # print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
             # print("gt_labesl shape: ", gt_labels_)
@@ -37,8 +37,8 @@ def eval(dataloader, drawloader, model, test_num):
             pred_labels += pred_labels_
             pred_scores += pred_scores_
 
-            img_to_draw = draw_dataset[ii].transpose(1, 2, 0)
-            img = draw_func(img_to_draw, gt_bboxes_, pred_bboxes_)
+            print("the shape now is: ", img.shape)
+            img = draw_func(img, gt_bboxes_, pred_bboxes_)
 
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
@@ -129,17 +129,17 @@ def main():
                                            shuffle=False,
                                            pin_memory=True
                                            )
-        drawset = DrawDataset('/data1/zinan/xiangya_backup', split='test')
-        draw_dataloader = data_.DataLoader(drawset,
-                                           batch_size=1,
-                                           num_workers=opt.test_num_workers,
-                                           shuffle=False,
-                                           pin_memory=True
-                                           )
+        # drawset = DrawDataset('/data1/zinan/xiangya_backup', split='test')
+        # draw_dataloader = data_.DataLoader(drawset,
+        #                                    batch_size=1,
+        #                                    num_workers=opt.test_num_workers,
+        #                                    shuffle=False,
+        #                                    pin_memory=True
+        #                                    )
         # model = trainer.load_state_dict(torch.load(model_path)['model'])
         state_dict = torch.load(model_path)
         faster_rcnn.load_state_dict(state_dict['model'])
-        eval(test_dataloader, draw_dataloader, faster_rcnn, len(testset))
+        eval(test_dataloader, faster_rcnn, len(testset))
 
 
 if __name__ == '__main__':
