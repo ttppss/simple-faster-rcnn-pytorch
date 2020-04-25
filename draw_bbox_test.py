@@ -13,6 +13,7 @@ from utils.eval_tool import calc_detection_voc_prec_rec
 from metric_polyp import *
 import time
 import pickle
+from utils import array_tool as at
 
 
 def eval(dataloader, model, test_num):
@@ -37,9 +38,9 @@ def eval(dataloader, model, test_num):
             pred_labels += pred_labels_
             pred_scores += pred_scores_
 
-            print("the shape now is: ", imgs.shape)
-            img_to_draw = torch.squeeze(imgs, 0).numpy().transpose(1, 2, 0)[:, :, [0, 1, 2]]
-            img = draw_func(img_to_draw, gt_bboxes_, pred_bboxes_)
+
+            ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
+            img = draw_func(ori_img_, gt_bboxes_, pred_bboxes_)
 
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
