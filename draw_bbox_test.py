@@ -2,7 +2,7 @@ from __future__ import absolute_import
 import os, glob
 from utils.config import opt
 from data.voc_dataset import VOCBboxDataset
-from data.dataset import Dataset, TestDataset, inverse_normalize, DrawDataset
+from data.dataset import Dataset, TestDataset, inverse_normalize
 from model import FasterRCNNVGG16
 from torch.utils import data as data_
 from trainer import FasterRCNNTrainer
