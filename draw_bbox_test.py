@@ -37,8 +37,8 @@ def eval(dataloader, model, test_num):
             pred_labels += pred_labels_
             pred_scores += pred_scores_
 
-            print("the shape now is: ", img.shape)
-            img = draw_func(img, gt_bboxes_, pred_bboxes_)
+            print("the shape now is: ", imgs.shape)
+            img = draw_func(imgs, gt_bboxes_, pred_bboxes_)
 
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
