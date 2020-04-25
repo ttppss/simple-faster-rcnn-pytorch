@@ -38,7 +38,8 @@ def eval(dataloader, model, test_num):
             pred_scores += pred_scores_
 
             print("the shape now is: ", imgs.shape)
-            img = draw_func(imgs, gt_bboxes_, pred_bboxes_)
+            img_to_draw = torch.squeeze(imgs, 0).numpy().transpose(1, 2, 0)
+            img = draw_func(img_to_draw, gt_bboxes_, pred_bboxes_)
 
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
