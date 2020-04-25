@@ -21,7 +21,7 @@ def eval(dataloader, model, test_num):
         model.eval()
         pred_bboxes, pred_labels, pred_scores = list(), list(), list()
         gt_bboxes, gt_labels, gt_difficults = list(), list(), list()
-        for ii, (ori_img, imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
+        for ii, (imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
             # print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
             # print("gt_labesl shape: ", gt_labels_)
             sizes = [sizes[0][0].item(), sizes[1][0].item()]
@@ -34,7 +34,7 @@ def eval(dataloader, model, test_num):
             pred_labels += pred_labels_
             pred_scores += pred_scores_
 
-            img = draw_func(ori_img, gt_bboxes_, pred_bboxes_)
+            img = draw_func(imgs, gt_bboxes_, pred_bboxes_)
 
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
@@ -43,7 +43,7 @@ def eval(dataloader, model, test_num):
 
 def draw_func(imgs, gt_bboxes, pred_bboxes_):
     imgs = imgs.numpy()
-    # print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
+    print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
     gt_bboxes = gt_bboxes
     pred_bboxes_ = pred_bboxes_
     for pt in gt_bboxes:
