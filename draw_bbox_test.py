@@ -40,6 +40,7 @@ def eval(dataloader, model, test_num):
 
 
             ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
+            ori_img_ = ori_img_.transpose(1, 2, 0)
             print('ori_img_ shape: ', ori_img_.shape)
             # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
             # img = draw_func(ori_img_, gt_bboxes_, pred_bboxes_)
