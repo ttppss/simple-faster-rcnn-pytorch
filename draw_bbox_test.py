@@ -57,9 +57,9 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
     # print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
     imgs = imgs
     gt_bboxes = gt_bboxes
-    print('gt_bboxes shape: ', gt_bboxes, '\n', '*' * 100)
+    print('gt_bboxes shape: ', gt_bboxes.shape, '\n', gt_bboxes, '\n', '*' * 100)
     pred_bboxes = pred_bboxes
-    print('pred_bboxes shape: ', pred_bboxes, '\n', '*' * 100)
+    print('pred_bboxes shape: ', pred_bboxes.shape, '\n', pred_bboxes, '\n', '*' * 100)
     for pt in gt_bboxes:
         # print('pt: ', pt, 'pt shape: ', pt.shape)
         pt1 = (int(pt[0][1].item()), int(pt[0][0].item()))
