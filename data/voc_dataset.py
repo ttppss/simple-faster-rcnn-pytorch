@@ -115,9 +115,9 @@ class VOCBboxDataset:
         else:
             img_file = os.path.join(self.data_dir, im_info["filename"])
             print("img_file: ", img_file)
-        img = read_image(img_file, color=True)
 
-        # img = imageio.imread(img_file).transpose(2, 0, 1)
+        img = imageio.imread(img_file).transpose(2, 0, 1)
+        print('image shape after transpose: ', img.shape)
 
         difficult = np.array([0] * len(im_info["gt_bboxes"]), dtype=np.bool).astype(np.uint8)
         bbox = list()
