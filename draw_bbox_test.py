@@ -42,13 +42,13 @@ def eval(dataloader, model, test_num):
 
 
             ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
-            print('image shape after inverse norm: ', ori_img_.shape)
+            # print('image shape after inverse norm: ', ori_img_.shape)
             ori_img = ori_img_.transpose(1, 2, 0)
             # print('ori_img_ shape: ', ori_img_.shape)
             # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
             img = draw_func(ori_img, gt_bboxes, pred_bboxes)
             #
-            # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
+            cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
             if ii == test_num: break
 
@@ -57,7 +57,9 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
     # print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
     imgs = imgs
     gt_bboxes = gt_bboxes
+    print('gt_bboxes shape: ', gt_bboxes, '\n', '*' * 100)
     pred_bboxes = pred_bboxes
+    print('pred_bboxes shape: ', pred_bboxes, '\n', '*' * 100)
     for pt in gt_bboxes:
         # print('pt: ', pt, 'pt shape: ', pt.shape)
         pt1 = (int(pt[0][1].item()), int(pt[0][0].item()))
