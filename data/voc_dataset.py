@@ -122,6 +122,7 @@ class VOCBboxDataset:
         difficult = np.array([0] * len(im_info["gt_bboxes"]), dtype=np.bool).astype(np.uint8)
         bbox = list()
         for box in im_info["gt_bboxes"]:
+            print('\n', '*' * 80, 'index:', i, 'original box: ', box, '\n', '*' * 80)
             bbox.append([box[1], box[0], box[3], box[2]])
         label = [1] * len(im_info["gt_bboxes"])
         bbox = np.stack(bbox).astype(np.float32)
