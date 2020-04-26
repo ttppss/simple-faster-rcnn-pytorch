@@ -65,7 +65,7 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
         pt1 = (int(pt[0][1].item()), int(pt[0][0].item()))
         # print('pt1: ', pt1)
         pt2 = (int(pt[0][3].item()), int(pt[0][2].item()))
-        imgs = cv2.rectangle(imgs, pt1, pt2, (255, 0, 0), 2)
+        imgs_gt = cv2.rectangle(imgs, pt1, pt2, (255, 0, 0), 2)
 
     for pred_bbox in pred_bboxes:
         print('pred_bbox shape: ', len(pred_bbox), '\n', 'pred_bbox: ', pred_bbox, '\n', '*' * 100)
@@ -73,9 +73,9 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
             print('pb size: ', len(pb), '\n', 'pb: ', pb,  '\n', '*' * 100)
             pt1 = (int(pb[1].item()), int(pb[0].item()))
             pt2 = (int(pb[3].item()), int(pb[2].item()))
-            imgs = cv2.rectangle(imgs, pt1, pt2, (0, 255, 0), 2)
+            imgs_pred = cv2.rectangle(imgs_gt, pt1, pt2, (0, 255, 0), 2)
 
-        return imgs
+        return imgs_pred
 
         # # print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
         # eval = Metric(visualize=False, visualization_root=None)
