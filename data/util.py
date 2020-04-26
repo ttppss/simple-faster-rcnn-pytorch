@@ -23,6 +23,7 @@ def read_image(path, dtype=np.float32, color=True):
     """
 
     f = Image.open(path)
+    print('origin image shape: ', f.shape)
     try:
         if color:
             img = f.convert('RGB')

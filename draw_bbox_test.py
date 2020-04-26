@@ -30,33 +30,33 @@ def eval(dataloader, model, test_num):
             # print("gt_labesl shape: ", gt_labels_)
             sizes = [sizes[0][0].item(), sizes[1][0].item()]
             pred_bboxes_, pred_labels_, pred_scores_ = model.predict(imgs, [sizes])
-            print("\n", "*" * 100, "pred_bboxes_: ", pred_bboxes_, "\n", "pred_labels_: ", pred_labels_, "\n", "pred_scores_: ", pred_scores_)
+            # print("\n", "*" * 100, "pred_bboxes_: ", pred_bboxes_, "\n", "pred_labels_: ", pred_labels_, "\n", "pred_scores_: ", pred_scores_)
             gt_bboxes += list(gt_bboxes_.numpy())
             gt_labels += list(gt_labels_.numpy())
             gt_difficults += list(gt_difficults_.numpy())
             pred_bboxes += pred_bboxes_
             pred_labels += pred_labels_
             pred_scores += pred_scores_
-            print("\n", "*" * 100, "pred_bboxes: ", pred_bboxes, "\n", "pred_labels: ", pred_labels, "\n", "pred_scores: ",
-                  pred_scores)
+            # print("\n", "*" * 100, "pred_bboxes: ", pred_bboxes, "\n", "pred_labels: ", pred_labels, "\n", "pred_scores: ",
+            #       pred_scores)
 
 
             ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
-            ori_img_ = ori_img_.transpose(1, 2, 0)
+            ori_img = ori_img_.transpose(1, 2, 0)
             # print('ori_img_ shape: ', ori_img_.shape)
             # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
-            img = draw_func(ori_img_, gt_bboxes_, pred_bboxes_)
+            img = draw_func(ori_img, gt_bboxes, pred_bboxes)
             #
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
             if ii == test_num: break
 
 
-def draw_func(imgs, gt_bboxes, pred_bboxes_):
+def draw_func(imgs, gt_bboxes, pred_bboxes):
     # print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
     imgs = imgs
     gt_bboxes = gt_bboxes
-    pred_bboxes_ = pred_bboxes_
+    pred_bboxes = pred_bboxes
     for pt in gt_bboxes:
         # print('pt: ', pt, 'pt shape: ', pt.shape)
         pt1 = (int(pt[0][1].item()), int(pt[0][0].item()))
@@ -64,7 +64,7 @@ def draw_func(imgs, gt_bboxes, pred_bboxes_):
         pt2 = (int(pt[0][3].item()), int(pt[0][2].item()))
         imgs = cv2.rectangle(imgs, pt1, pt2, (255, 0, 0), 2)
 
-    for pred_bbox in pred_bboxes_:
+    for pred_bbox in pred_bboxes:
         # print('pred_bbox: ', pred_bbox, 'pred_bbox shape: ', pred_bbox.shape)
         for pb in pred_bbox:
             pt1 = (int(pb[1].item()), int(pb[0].item()))
