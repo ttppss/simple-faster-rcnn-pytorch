@@ -40,10 +40,17 @@ def eval(dataloader, model, test_num):
             print("\n", "*" * 80, "pred_bboxes: ", pred_bboxes, "\n", "pred_labels: ", pred_labels, "\n", "pred_scores: ",
                   pred_scores, "pred_scores shape: ", len(pred_bboxes))
 
+            ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
+            for i, preds in enumerate(pred_scores):
+                for j, pred in enumerate(preds):
+                    if pred_scores[i][j] > thresh:
+                        ori_img = draw_func(ori_img, gt_bboxes[i], pred_bboxes[i][j])
+
+
 
             # ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
             # print('image shape after inverse norm: ', ori_img.shape)
-            ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
+
             # print('ori_img_ shape: ', ori_img_.shape)
             # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
             # img = draw_func(ori_img, gt_bboxes, pred_bboxes)
@@ -80,22 +87,21 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
     # print('gt_bboxes shape: ', len(gt_bboxes), '\n', gt_bboxes, '\n', '*' * 100)
     pred_bboxes = pred_bboxes
     # print('pred_bboxes shape: ', len(pred_bboxes), '\n', pred_bboxes, '\n', '*' * 100)
-    for pt in gt_bboxes:
-        # print('pt size: ', len(pt), '\n', 'pt: ', pt,  '\n', '*' * 100)
-        pt1 = (int(pt[0][1].item()), int(pt[0][0].item()))
-        # print('pt1: ', pt1)
-        pt2 = (int(pt[0][3].item()), int(pt[0][2].item()))
-        imgs_gt = cv2.rectangle(imgs, pt1, pt2, (255, 0, 0), 2)
+    # print('pt size: ', len(pt), '\n', 'pt: ', pt,  '\n', '*' * 100)
+    pt1 = (int(gt_bboxes[1].item()), int(gt_bboxes[0].item()))
+    # print('pt1: ', pt1)
+    pt2 = (int(gt_bboxes[3].item()), int(gt_bboxes[2].item()))
+    imgs_gt = cv2.rectangle(imgs, pt1, pt2, (255, 0, 0), 2)
 
-    for pred_bbox in pred_bboxes:
-        # print('pred_bbox shape: ', len(pred_bbox), '\n', 'pred_bbox: ', pred_bbox, '\n', '*' * 100)
-        for pb in pred_bbox:
-            # print('pb size: ', len(pb), '\n', 'pb: ', pb,  '\n', '*' * 100)
-            pt1 = (int(pb[1].item()), int(pb[0].item()))
-            pt2 = (int(pb[3].item()), int(pb[2].item()))
-            imgs_pred = cv2.rectangle(imgs_gt, pt1, pt2, (0, 255, 0), 2)
+    # for pred_bbox in pred_bboxes:
+    #     # print('pred_bbox shape: ', len(pred_bbox), '\n', 'pred_bbox: ', pred_bbox, '\n', '*' * 100)
+    #     for pb in pred_bbox:
+    # # print('pb size: ', len(pb), '\n', 'pb: ', pb,  '\n', '*' * 100)
+    pre_pt1 = (int(pred_bboxes[1].item()), int(pred_bboxes[0].item()))
+    pre_pt2 = (int(pred_bboxes[3].item()), int(pred_bboxes[2].item()))
+    imgs_pred = cv2.rectangle(imgs_gt, pre_pt1, pre_pt2, (0, 255, 0), 2)
 
-        return imgs_pred
+    return imgs_pred
 
         # # print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
         # eval = Metric(visualize=False, visualization_root=None)
