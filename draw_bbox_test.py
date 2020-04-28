@@ -37,7 +37,7 @@ def eval(dataloader, model, test_num):
             pred_bboxes += pred_bboxes_
             pred_labels += pred_labels_
             pred_scores += pred_scores_
-            print("\n", "*" * 80, "pred_bboxes: ", pred_bboxes_, "\n", "pred_labels: ", pred_labels, "\n", "pred_scores: ",
+            print("\n", "*" * 80, "pred_bboxes: ", pred_bboxes_, "\n", "pred_labels: ", pred_labels_, "\n", "pred_scores: ",
                   pred_scores_, "pred_scores shape: ", len(pred_bboxes_))
 
             ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
@@ -94,7 +94,7 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
     imgs_gt = cv2.rectangle(imgs, pt1, pt2, (255, 0, 0), 2)
 
     # for pred_bbox in pred_bboxes:
-    #     # print('pred_bbox shape: ', len(pred_bbox), '\n', 'pred_bbox: ', pred_bbox, '\n', '*' * 100)
+    print('pred_bbox shape: ', len(pred_bboxes), '\n', 'pred_bbox: ', pred_bboxes, '\n', '*' * 100)
     #     for pb in pred_bbox:
     # # print('pb size: ', len(pb), '\n', 'pb: ', pb,  '\n', '*' * 100)
     pre_pt1 = (int(pred_bboxes[1].item()), int(pred_bboxes[0].item()))
