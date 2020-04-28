@@ -83,7 +83,7 @@ def eval(dataloader, model, test_num):
 def draw_func(imgs, gt_bboxes, pred_bboxes):
     # print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
     imgs = imgs
-    gt_bboxes = gt_bboxes
+    gt_bboxes = gt_bboxes[0]
     print('gt_bboxes shape: ', len(gt_bboxes), '\n', gt_bboxes, '\n', '*' * 100)
     pred_bboxes = pred_bboxes
     # print('pred_bboxes shape: ', len(pred_bboxes), '\n', pred_bboxes, '\n', '*' * 100)
