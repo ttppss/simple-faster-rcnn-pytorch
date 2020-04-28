@@ -37,20 +37,40 @@ def eval(dataloader, model, test_num):
             pred_bboxes += pred_bboxes_
             pred_labels += pred_labels_
             pred_scores += pred_scores_
-            # print("\n", "*" * 100, "pred_bboxes: ", pred_bboxes, "\n", "pred_labels: ", pred_labels, "\n", "pred_scores: ",
-            #       pred_scores)
+            print("\n", "*" * 80, "pred_bboxes: ", pred_bboxes, "\n", "pred_labels: ", pred_labels, "\n", "pred_scores: ",
+                  pred_scores, "pred_scores shape: ", len(pred_bboxes))
 
 
             # ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
-            print('image shape after inverse norm: ', ori_img.shape)
+            # print('image shape after inverse norm: ', ori_img.shape)
             ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
             # print('ori_img_ shape: ', ori_img_.shape)
             # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
-            img = draw_func(ori_img, gt_bboxes, pred_bboxes)
-            #
-            cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
+            # img = draw_func(ori_img, gt_bboxes, pred_bboxes)
+            # #
+            # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
             if ii == test_num: break
+
+        # for i in range(len(pred_bboxes)):
+        #     pred_bbox = pred_bboxes[i]
+        #     target_bbox = gt_bboxes[i]
+        #     pred_score = pred_scores[i]
+        #     pred_list = []
+        #     target_list = []
+        #     combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
+        #     # print(combination_bbox_score)
+        #     for j in range(len(pred_bbox)):
+        #         if combination_bbox_score[0][2] > thresh:
+        #             pred_list.append(combination_bbox_score[0][0])
+        #             target_list.append(combination_bbox_score[0][1])
+        #
+        # ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
+        # # print('ori_img_ shape: ', ori_img_.shape)
+        # # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
+        # img = draw_func(ori_img, gt_bboxes, pred_bboxes)
+        # #
+        # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), img)
 
 
 def draw_func(imgs, gt_bboxes, pred_bboxes):
