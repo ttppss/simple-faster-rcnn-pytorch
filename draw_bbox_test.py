@@ -38,12 +38,12 @@ def eval(dataloader, model, test_num):
             pred_labels += pred_labels_
             pred_scores += pred_scores_
             print("\n", "*" * 80, "pred_bboxes: ", pred_bboxes_, "\n", "pred_labels: ", pred_labels, "\n", "pred_scores: ",
-                  pred_scores, "pred_scores shape: ", len(pred_bboxes_))
+                  pred_scores_, "pred_scores shape: ", len(pred_bboxes_))
 
             ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
             for i, preds in enumerate(pred_scores_):
                 for j, pred in enumerate(preds):
-                    if pred_scores[i][j] > thresh:
+                    if pred_scores_[i][j] > thresh:
                         ori_img = draw_func(ori_img, gt_bboxes[i], pred_bboxes_[i][j])
 
 
