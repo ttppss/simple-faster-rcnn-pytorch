@@ -44,7 +44,7 @@ def eval(dataloader, model, test_num):
             for i, preds in enumerate(pred_scores):
                 for j, pred in enumerate(preds):
                     if pred_scores[i][j] > thresh:
-                        ori_img = draw_func(ori_img, gt_bboxes, pred_bboxes[i][j])
+                        ori_img = draw_func(ori_img, gt_bboxes[i], pred_bboxes[i][j])
 
 
 
