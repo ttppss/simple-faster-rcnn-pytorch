@@ -44,7 +44,7 @@ def eval(dataloader, model, test_num):
             for i, preds in enumerate(pred_scores_):
                 for j, pred in enumerate(preds):
                     if pred_scores_[i][j] > thresh:
-                        ori_img = draw_func(ori_img, gt_bboxes[i], pred_bboxes_[i][j])
+                        ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j])
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img)
 
 
