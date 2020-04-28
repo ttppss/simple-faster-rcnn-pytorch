@@ -42,7 +42,7 @@ def eval(dataloader, model, test_num):
 
 
             # ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
-            # print('image shape after inverse norm: ', ori_img_.shape)
+            print('image shape after inverse norm: ', ori_img.shape)
             ori_img = ori_img.transpose(1, 2, 0)
             # print('ori_img_ shape: ', ori_img_.shape)
             # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
