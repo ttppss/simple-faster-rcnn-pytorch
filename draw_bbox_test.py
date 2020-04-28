@@ -44,7 +44,7 @@ def eval(dataloader, model, test_num):
             for i, preds in enumerate(pred_scores):
                 for j, pred in enumerate(preds):
                     if pred_scores[i][j] > thresh:
-                        ori_img = draw_func(ori_img, gt_bboxes[i], pred_bboxes[i][j])
+                        ori_img = draw_func(ori_img, gt_bboxes, pred_bboxes[i][j])
 
 
 
@@ -84,7 +84,7 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
     # print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
     imgs = imgs
     gt_bboxes = gt_bboxes
-    # print('gt_bboxes shape: ', len(gt_bboxes), '\n', gt_bboxes, '\n', '*' * 100)
+    print('gt_bboxes shape: ', len(gt_bboxes), '\n', gt_bboxes, '\n', '*' * 100)
     pred_bboxes = pred_bboxes
     # print('pred_bboxes shape: ', len(pred_bboxes), '\n', pred_bboxes, '\n', '*' * 100)
     # print('pt size: ', len(pt), '\n', 'pt: ', pt,  '\n', '*' * 100)
