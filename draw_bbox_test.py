@@ -57,20 +57,20 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
     # print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
     imgs = imgs
     gt_bboxes = gt_bboxes
-    print('gt_bboxes shape: ', len(gt_bboxes), '\n', gt_bboxes, '\n', '*' * 100)
+    # print('gt_bboxes shape: ', len(gt_bboxes), '\n', gt_bboxes, '\n', '*' * 100)
     pred_bboxes = pred_bboxes
-    print('pred_bboxes shape: ', len(pred_bboxes), '\n', pred_bboxes, '\n', '*' * 100)
+    # print('pred_bboxes shape: ', len(pred_bboxes), '\n', pred_bboxes, '\n', '*' * 100)
     for pt in gt_bboxes:
-        print('pt size: ', len(pt), '\n', 'pt: ', pt,  '\n', '*' * 100)
+        # print('pt size: ', len(pt), '\n', 'pt: ', pt,  '\n', '*' * 100)
         pt1 = (int(pt[0][1].item()), int(pt[0][0].item()))
         # print('pt1: ', pt1)
         pt2 = (int(pt[0][3].item()), int(pt[0][2].item()))
         imgs_gt = cv2.rectangle(imgs, pt1, pt2, (255, 0, 0), 2)
 
     for pred_bbox in pred_bboxes:
-        print('pred_bbox shape: ', len(pred_bbox), '\n', 'pred_bbox: ', pred_bbox, '\n', '*' * 100)
+        # print('pred_bbox shape: ', len(pred_bbox), '\n', 'pred_bbox: ', pred_bbox, '\n', '*' * 100)
         for pb in pred_bbox:
-            print('pb size: ', len(pb), '\n', 'pb: ', pb,  '\n', '*' * 100)
+            # print('pb size: ', len(pb), '\n', 'pb: ', pb,  '\n', '*' * 100)
             pt1 = (int(pb[1].item()), int(pb[0].item()))
             pt2 = (int(pb[3].item()), int(pb[2].item()))
             imgs_pred = cv2.rectangle(imgs_gt, pt1, pt2, (0, 255, 0), 2)
