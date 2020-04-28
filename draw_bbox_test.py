@@ -25,7 +25,7 @@ def eval(dataloader, model, test_num):
         # draw_dataset = list()
         # for iii, img in enumerate(drawloader):
         #     draw_dataset.append(img)
-        for ii, (imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
+        for ii, (ori_img, imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
             # print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
             # print("gt_labesl shape: ", gt_labels_)
             sizes = [sizes[0][0].item(), sizes[1][0].item()]
@@ -41,9 +41,9 @@ def eval(dataloader, model, test_num):
             #       pred_scores)
 
 
-            ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
+            # ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
             # print('image shape after inverse norm: ', ori_img_.shape)
-            ori_img = ori_img_.transpose(1, 2, 0)
+            ori_img = ori_img.transpose(1, 2, 0)
             # print('ori_img_ shape: ', ori_img_.shape)
             # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img_)
             img = draw_func(ori_img, gt_bboxes, pred_bboxes)
