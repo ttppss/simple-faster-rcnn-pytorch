@@ -47,11 +47,12 @@ def eval(dataloader, model, test_num):
             for i, preds in enumerate(pred_scores_):
                 for j, pred in enumerate(preds):
                     if pred_scores_[i][j] > thresh:
-                        ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j])
+                        ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j], color='green')
                     else:
-                        neg_img = draw_func(neg_img, gt_bboxes_[i], pred_bboxes_[i][j])
+                        ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j])
+                        # neg_img = draw_func(neg_img, gt_bboxes_[i], pred_bboxes_[i][j])
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img)
-            cv2.imwrite('/data0/zinan_xiong/fasterrcnn_negative_image/{}.jpg'.format(ii), neg_img)
+            # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_negative_image/{}.jpg'.format(ii), neg_img)
 
 
             # ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
@@ -86,7 +87,7 @@ def eval(dataloader, model, test_num):
 
 
 
-def draw_func(imgs, gt_bboxes, pred_bboxes):
+def draw_func(imgs, gt_bboxes, pred_bboxes, color):
     # print('imgs: ', imgs, 'imgs shape: ', imgs.shape)
     imgs = imgs
     gt_bboxes = gt_bboxes[0]
@@ -97,6 +98,8 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
     pt1 = (int(gt_bboxes[1].item()), int(gt_bboxes[0].item()))
     # print('pt1: ', pt1)
     pt2 = (int(gt_bboxes[3].item()), int(gt_bboxes[2].item()))
+
+
     imgs_gt = cv2.rectangle(imgs, pt1, pt2, (255, 0, 0), 2)
 
     # for pred_bbox in pred_bboxes:
@@ -105,7 +108,10 @@ def draw_func(imgs, gt_bboxes, pred_bboxes):
     # # print('pb size: ', len(pb), '\n', 'pb: ', pb,  '\n', '*' * 100)
     pre_pt1 = (int(pred_bboxes[1].item()), int(pred_bboxes[0].item()))
     pre_pt2 = (int(pred_bboxes[3].item()), int(pred_bboxes[2].item()))
-    imgs_pred = cv2.rectangle(imgs_gt, pre_pt1, pre_pt2, (0, 255, 0), 2)
+    if color == 'green':
+        imgs_pred = cv2.rectangle(imgs_gt, pre_pt1, pre_pt2, (0, 255, 0), 2)
+    else:
+        imgs_pred = cv2.rectangle(imgs_gt, pre_pt1, pre_pt2, (0, 0, 255), 1)
 
     return imgs_pred
 
