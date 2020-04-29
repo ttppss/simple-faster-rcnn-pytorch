@@ -118,6 +118,7 @@ class VOCBboxDataset:
             # print("img_file: ", img_file)
 
         img = io.imread(img_file).transpose(2, 0, 1)
+        print("img shape after transpose: ", img.shape)
 
 
         difficult = np.array([0] * len(im_info["gt_bboxes"]), dtype=np.bool).astype(np.uint8)
