@@ -45,7 +45,10 @@ def eval(dataloader, model, test_num):
                 for j, pred in enumerate(preds):
                     if pred_scores_[i][j] > thresh:
                         ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j])
+                    else:
+                        neg_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j])
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img)
+            cv2.imwrite('/data0/zinan_xiong/fasterrcnn_negative_image/{}.jpg'.format(ii), neg_img)
 
 
             # ori_img_ = inverse_normalize(at.tonumpy(imgs[0]))
@@ -152,8 +155,11 @@ def main():
     # model_path = glob.glob(os.path.join(base_dir, '*.pth'))
     # print(model_path)
     image_save_path = '/data0/zinan_xiong/fasterrcnn_result_image/'
+    neg_img_path = '/data0/zinan_xiong/fasterrcnn_negative_image/'
     if not os.path.exists(image_save_path):
         os.makedirs(image_save_path)
+    if not os.path.exists(neg_img_path):
+        os.makedirs(neg_img_path)
     if model_path:
         faster_rcnn = FasterRCNNVGG16().cuda()
         print('model construct completed')
