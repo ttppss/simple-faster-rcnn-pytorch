@@ -26,7 +26,7 @@ def eval(dataloader, model, test_num):
         # for iii, img in enumerate(drawloader):
         #     draw_dataset.append(img)
         for ii, (ori_img, imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
-            print("\n", "gt_boxes_outside: ", gt_bboxes_, "shape:", len(gt_bboxes_), "\n")
+            # print("\n", "gt_boxes_outside: ", gt_bboxes_, "shape:", len(gt_bboxes_), "\n")
             # print("gt_labesl shape: ", gt_labels_)
             sizes = [sizes[0][0].item(), sizes[1][0].item()]
             pred_bboxes_, pred_labels_, pred_scores_ = model.predict(imgs, [sizes])
@@ -41,6 +41,7 @@ def eval(dataloader, model, test_num):
             #       pred_scores_, "pred_scores shape: ", len(pred_bboxes_))
 
             ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
+            print('ori_img in eval: ', ori_img.shape)
             for i, preds in enumerate(pred_scores_):
                 for j, pred in enumerate(preds):
                     if pred_scores_[i][j] > thresh:
