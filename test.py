@@ -26,7 +26,7 @@ def eval(dataloader, model, test_num):
 				#print("gt_labesl shape: ", gt_labels_)
 				sizes = [sizes[0][0].item(), sizes[1][0].item()]
 				pred_bboxes_, pred_labels_, pred_scores_ = model.predict(imgs, [sizes])
-				#print("pred_bboxes: ", pred_bboxes_, "\n", "pred_labels: ", pred_labels_, "\n", "pred_scores: ", pred_scores_)
+				print("pred_bboxes_shape: ", pred_bboxes_.shape, "\n", "pred_bboxes: ", pred_bboxes_, '\n')
 				gt_bboxes += list(gt_bboxes_.numpy())
 				gt_labels += list(gt_labels_.numpy())
 				gt_difficults += list(gt_difficults_.numpy())
