@@ -42,13 +42,14 @@ def eval(dataloader, model, test_num):
             #       pred_scores_, "pred_scores shape: ", len(pred_bboxes_))
 
             ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
+            neg_img = ori_img
             print('ori_img in eval: ', ori_img.shape)
             for i, preds in enumerate(pred_scores_):
                 for j, pred in enumerate(preds):
                     if pred_scores_[i][j] > thresh:
                         ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j])
                     else:
-                        neg_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j])
+                        neg_img = draw_func(neg_img, gt_bboxes_[i], pred_bboxes_[i][j])
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img)
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_negative_image/{}.jpg'.format(ii), neg_img)
 
