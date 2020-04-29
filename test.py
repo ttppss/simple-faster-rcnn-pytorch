@@ -20,7 +20,7 @@ def eval(dataloader, model, test_num):
 		for thresh in np.linspace(0.2, 0.9, 7):
 			model.eval()
 			pred_bboxes, pred_labels, pred_scores = list(), list(), list()
-			gt_bboxes, gt_labels, gt_difficults = list(), list(), list()
+			ori_imgs, gt_bboxes, gt_labels, gt_difficults = list(), list(), list(), list()
 			for ii, (ori_img, imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
 				#print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
 				#print("gt_labesl shape: ", gt_labels_)
@@ -35,6 +35,7 @@ def eval(dataloader, model, test_num):
 				pred_scores += pred_scores_
 
 				ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
+				ori_imgs += ori_img
 
 				if ii == test_num: break
 			#print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
@@ -51,7 +52,7 @@ def eval(dataloader, model, test_num):
 					if combination_bbox_score[0][2] > thresh:
 						pred_list.append(combination_bbox_score[0][0])
 						target_list.append(combination_bbox_score[0][1])
-				image= ori_img
+				image= ori_imgs[i]
 				eval.eval_add_result(target_list, pred_list,image=image, image_name=i)
 			precision, recall, pred_bbox_count = eval.get_result()
 			F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
