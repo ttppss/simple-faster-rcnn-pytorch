@@ -66,7 +66,7 @@ def eval(dataloader, model, test_num):
 
 
 def main():
-    model_path = '/data1/zinan/simplefaster/simple-faster-rcnn-pytorch/checkpoints/fasterrcnn_03080849_0.7673800918176635'
+    model_path = '/data1/zinan_xiong/simple-faster-rcnn-pytorch/checkpoints/saved/fasterrcnn_01270054'
     #model_path = glob.glob(os.path.join(base_dir, '*.pth'))
     #print(model_path)
     
