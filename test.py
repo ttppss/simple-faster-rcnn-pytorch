@@ -33,9 +33,9 @@ def eval(dataloader, model, test_num):
 				pred_bboxes += pred_bboxes_
 				pred_labels += pred_labels_
 				pred_scores += pred_scores_
-
+				print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
 				ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
-				ori_imgs += ori_img
+				ori_imgs.append(ori_img)
 
 				if ii == test_num: break
 			#print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
