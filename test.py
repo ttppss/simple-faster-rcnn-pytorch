@@ -21,7 +21,7 @@ def eval(dataloader, model, test_num):
 			model.eval()
 			pred_bboxes, pred_labels, pred_scores = list(), list(), list()
 			gt_bboxes, gt_labels, gt_difficults = list(), list(), list()
-			for ii, (imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
+			for ii, (ori_img, imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
 				#print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
 				#print("gt_labesl shape: ", gt_labels_)
 				sizes = [sizes[0][0].item(), sizes[1][0].item()]
@@ -33,6 +33,9 @@ def eval(dataloader, model, test_num):
 				pred_bboxes += pred_bboxes_
 				pred_labels += pred_labels_
 				pred_scores += pred_scores_
+
+				ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
+
 				if ii == test_num: break
 			#print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
 			eval = Metric(visualize=True, visualization_root='/data1/zinan_xiong/')
@@ -48,7 +51,7 @@ def eval(dataloader, model, test_num):
 					if combination_bbox_score[0][2] > thresh:
 						pred_list.append(combination_bbox_score[0][0])
 						target_list.append(combination_bbox_score[0][1])
-				image= None
+				image= ori_img
 				eval.eval_add_result(target_list, pred_list,image=image, image_name=i)
 			precision, recall, pred_bbox_count = eval.get_result()
 			F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
