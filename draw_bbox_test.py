@@ -49,7 +49,7 @@ def eval(dataloader, model, test_num):
                     if pred_scores_[i][j] > thresh:
                         ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j], color='green')
                     else:
-                        ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j])
+                        ori_img = draw_func(ori_img, gt_bboxes_[i], pred_bboxes_[i][j], color='red')
                         # neg_img = draw_func(neg_img, gt_bboxes_[i], pred_bboxes_[i][j])
             cv2.imwrite('/data0/zinan_xiong/fasterrcnn_result_image/{}.jpg'.format(ii), ori_img)
             # cv2.imwrite('/data0/zinan_xiong/fasterrcnn_negative_image/{}.jpg'.format(ii), neg_img)
