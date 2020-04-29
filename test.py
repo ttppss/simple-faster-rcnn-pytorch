@@ -35,7 +35,7 @@ def eval(dataloader, model, test_num):
 				pred_scores += pred_scores_
 				# print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
 				ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
-				print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
+				# print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
 				ori_imgs.append(ori_img)
 
 				if ii == test_num: break
