@@ -35,7 +35,7 @@ def eval(dataloader, model, test_num):
 				pred_scores += pred_scores_
 				if ii == test_num: break
 			#print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
-			eval = Metric(visualize=False, visualization_root=None)
+			eval = Metric(visualize=True, visualization_root='/data1/zinan_xiong/')
 			for i in range(len(pred_bboxes)):
 				pred_bbox = pred_bboxes[i]
 				target_bbox = gt_bboxes[i]
