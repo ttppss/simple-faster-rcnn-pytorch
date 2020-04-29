@@ -26,11 +26,17 @@ def eval(dataloader, model, test_num):
 				#print("gt_labesl shape: ", gt_labels_)
 				sizes = [sizes[0][0].item(), sizes[1][0].item()]
 				pred_bboxes_, pred_labels_, pred_scores_ = model.predict(imgs, [sizes])
+				for pred_bbox in pred_bboxes_:
+					pp = list()
+					for pred in pred_bbox:
+						ppp = list()
+						ppp.append(pred[1], pred[0], pred[3], pred[2])
+					pp.append(ppp)
 				print("pred_bboxes_shape: ", len(pred_bboxes_), "\n", "pred_bboxes: ", pred_bboxes_, '\n')
 				gt_bboxes += list(gt_bboxes_.numpy())
 				gt_labels += list(gt_labels_.numpy())
 				gt_difficults += list(gt_difficults_.numpy())
-				pred_bboxes += pred_bboxes_
+				pred_bboxes += pp
 				pred_labels += pred_labels_
 				pred_scores += pred_scores_
 				# print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
