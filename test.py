@@ -30,7 +30,7 @@ def eval(dataloader, model, test_num):
 					pp = list()
 					for pred in pred_bbox:
 						ppp = list()
-						ppp.append(pred[1], pred[0], pred[3], pred[2])
+						ppp.append([pred[1], pred[0], pred[3], pred[2]])
 					pp.append(ppp)
 				print("pred_bboxes_shape: ", len(pred_bboxes_), "\n", "pred_bboxes: ", pred_bboxes_, '\n')
 				gt_bboxes += list(gt_bboxes_.numpy())
