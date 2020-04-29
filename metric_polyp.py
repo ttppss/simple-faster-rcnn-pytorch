@@ -8,7 +8,7 @@ from matplotlib import colors
 
 # import json
 class Metric(object):
-    def __init__(self, mode='center',iou_thresh=0,visualize = False,visualization_root='demo/'):
+    def __init__(self, mode='center',iou_thresh=0,visualize = True,visualization_root='/data1/zinan_xiong/'):
 
         self.TPs = []
         self.FNs = []
@@ -44,8 +44,8 @@ class Metric(object):
 
 
             for pt in pred_points:
-                pt1 = tuple([int(pt[0]), int(pt[1])])
-                pt2 = tuple([int(pt[2]), int(pt[3])])
+                pt1 = tuple([int(pt[1]), int(pt[0])])
+                pt2 = tuple([int(pt[3]), int(pt[2])])
                 cv2.rectangle(Detectionimage, pt1, pt2,self.Detection_color, 2)
 
         missing = False
@@ -103,7 +103,7 @@ class Metric(object):
                 cv2.rectangle(FPimage, pt1, pt2, self.GT_color, 2)
 
         if self.visualize:
-            if missing :
+            if missing:
                 cv2.imwrite(self.false_negative_folder+str(image_name)+'.jpg', FNimage)
             cv2.imwrite(self.detection_folder + str(image_name) + '.jpg', Detectionimage)
         if len(pred_points)>0 and self.visualize:
