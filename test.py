@@ -61,7 +61,7 @@ def eval(dataloader, model, test_num):
 				pred_list = []
 				target_list = []
 				combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
-				print('combination_bbox_score', combination_bbox_score)
+				print('index: ', i, 'combination_bbox_score', combination_bbox_score)
 				for j in range(len(pred_bbox)):
 					if combination_bbox_score[0][2] > thresh:
 						pred_list.append(combination_bbox_score[0][0])
