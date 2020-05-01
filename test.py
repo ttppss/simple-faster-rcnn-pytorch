@@ -23,9 +23,10 @@ def eval(dataloader, model, test_num):
 			ori_imgs, gt_bboxes, gt_labels, gt_difficults = list(), list(), list(), list()
 			for ii, (ori_img, imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
 				#print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
-				#print("gt_labesl shape: ", gt_labels_)
+				print('index: ', ii, "gt_bboxes_ shape: ", '\n', len(gt_bboxes_), "gt_bboxes_", gt_bboxes_, '\n', '*' * 80, '\n')
 				sizes = [sizes[0][0].item(), sizes[1][0].item()]
 				pred_bboxes_, pred_labels_, pred_scores_ = model.predict(imgs, [sizes])
+				print('index: ', ii, "pred_bboxes_ shape: ", '\n', len(pred_bboxes_), "pred_bboxes_", pred_bboxes_, '\n', '*' * 80, '\n')
 				for pred_bbox in pred_bboxes_:
 					pp = list()
 					for pred in pred_bbox:
