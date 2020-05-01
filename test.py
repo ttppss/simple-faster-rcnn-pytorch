@@ -47,26 +47,26 @@ def eval(dataloader, model, test_num):
 
 
 				if ii == test_num: break
-
-			print("ALL gt_bboxes shape: ", len(gt_bboxes), '\n', "ALL pred_bboxes_", gt_bboxes, '\n',
-				  '*' * 80, '\n')
-			print("ALL pred_bboxes shape: ", len(pred_bboxes), '\n', "ALL pred_bboxes_", pred_bboxes, '\n',
-				  '*' * 80, '\n')
+			# 612 bboxs in total
+			# print("ALL gt_bboxes shape: ", len(gt_bboxes), '\n', "ALL pred_bboxes_", gt_bboxes, '\n',
+			# 	  '*' * 80, '\n')
+			# print("ALL pred_bboxes shape: ", len(pred_bboxes), '\n', "ALL pred_bboxes_", pred_bboxes, '\n',
+			# 	  '*' * 80, '\n')
 			#print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
-			# eval = Metric(visualize=True, visualization_root='/data1/zinan_xiong/')
-			# for i in range(len(pred_bboxes)):
-			# 	pred_bbox = pred_bboxes[i]
-			# 	target_bbox = gt_bboxes[i]
-			# 	pred_score = pred_scores[i]
-			# 	pred_list = []
-			# 	target_list = []
-			# 	combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
-				#print(combination_bbox_score)
-			# 	for j in range(len(pred_bbox)):
-			# 		if combination_bbox_score[0][2] > thresh:
-			# 			pred_list.append(combination_bbox_score[0][0])
-			# 			target_list.append(combination_bbox_score[0][1])
-			# 	image= ori_imgs[i]
+			eval = Metric(visualize=True, visualization_root='/data1/zinan_xiong/')
+			for i in range(len(pred_bboxes)):
+				pred_bbox = pred_bboxes[i]
+				target_bbox = gt_bboxes[i]
+				pred_score = pred_scores[i]
+				pred_list = []
+				target_list = []
+				combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
+				print('combination_bbox_score', combination_bbox_score)
+				for j in range(len(pred_bbox)):
+					if combination_bbox_score[0][2] > thresh:
+						pred_list.append(combination_bbox_score[0][0])
+						target_list.append(combination_bbox_score[0][1])
+				image= ori_imgs[i]
 			# 	eval.eval_add_result(target_list, pred_list,image=image, image_name=i)
 			# precision, recall, pred_bbox_count = eval.get_result()
 			# F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
@@ -78,8 +78,8 @@ def eval(dataloader, model, test_num):
 			# outfile = open(file_name, 'wb')
 			# pickle.dump(saved_results, outfile)
 			# outfile.close()
-			#print("pred_bboxes size", len(pred_bboxes), pred_bboxes, "\n", "pred_labels size", len(pred_labels), pred_labels, "\n", "pred_scores size", len(pred_scores), pred_scores)
-			#print("precision length", len(result[0][1]), "\n",  "precision: ", result[0][1], "\n", "recall legnth: ", len(result[1][1]), "\n", "recall: ", result[1][1])
+			# print("pred_bboxes size", len(pred_bboxes), pred_bboxes, "\n", "pred_labels size", len(pred_labels), pred_labels, "\n", "pred_scores size", len(pred_scores), pred_scores)
+			# print("precision length", len(result[0][1]), "\n",  "precision: ", result[0][1], "\n", "recall legnth: ", len(result[1][1]), "\n", "recall: ", result[1][1])
 
 
 
