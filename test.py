@@ -45,33 +45,39 @@ def eval(dataloader, model, test_num):
 				# print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
 				ori_imgs.append(ori_img)
 
+
 				if ii == test_num: break
+
+			print("ALL gt_bboxes shape: ", '\n', len(gt_bboxes), "ALL pred_bboxes_", gt_bboxes, '\n',
+				  '*' * 80, '\n')
+			print("ALL pred_bboxes shape: ", '\n', len(pred_bboxes), "ALL pred_bboxes_", pred_bboxes, '\n',
+				  '*' * 80, '\n')
 			#print("pred bboxes: ", pred_bboxes, "\n", "pred labels: ", pred_labels, "\n", "pred scores: ", pred_scores)
-			eval = Metric(visualize=True, visualization_root='/data1/zinan_xiong/')
-			for i in range(len(pred_bboxes)):
-				pred_bbox = pred_bboxes[i]
-				target_bbox = gt_bboxes[i]
-				pred_score = pred_scores[i]
-				pred_list = []
-				target_list = []
-				combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
+			# eval = Metric(visualize=True, visualization_root='/data1/zinan_xiong/')
+			# for i in range(len(pred_bboxes)):
+			# 	pred_bbox = pred_bboxes[i]
+			# 	target_bbox = gt_bboxes[i]
+			# 	pred_score = pred_scores[i]
+			# 	pred_list = []
+			# 	target_list = []
+			# 	combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
 				#print(combination_bbox_score)
-				for j in range(len(pred_bbox)):
-					if combination_bbox_score[0][2] > thresh:
-						pred_list.append(combination_bbox_score[0][0])
-						target_list.append(combination_bbox_score[0][1])
-				image= ori_imgs[i]
-				eval.eval_add_result(target_list, pred_list,image=image, image_name=i)
-			precision, recall, pred_bbox_count = eval.get_result()
-			F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
-			F2 = 5 * (precision * recall) / max((4 * precision + recall), 1e-5)
-			print("detect time: ", time.time() - st)
-			print("Threshold: {:5f}, Prec: {:5f}, Rec: {:5f}, F1: {:5f}, F2: {:5f}, pred_bbox_count: {}".format(thresh, precision, recall, F1, F2, pred_bbox_count))
-			saved_results = {"gt_bboxes": gt_bboxes, "gt_labels": gt_labels, "gt_difficults": gt_difficults, "pred_bboxes": pred_bboxes, "pred_labels": pred_labels, "pred_scores": pred_scores, "filtered_pred_bbox": pred_list, "filtered_target_bbox": target_list}
-			file_name = 'threshold=' + str(thresh)
-			outfile = open(file_name, 'wb')
-			pickle.dump(saved_results, outfile)
-			outfile.close()
+			# 	for j in range(len(pred_bbox)):
+			# 		if combination_bbox_score[0][2] > thresh:
+			# 			pred_list.append(combination_bbox_score[0][0])
+			# 			target_list.append(combination_bbox_score[0][1])
+			# 	image= ori_imgs[i]
+			# 	eval.eval_add_result(target_list, pred_list,image=image, image_name=i)
+			# precision, recall, pred_bbox_count = eval.get_result()
+			# F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
+			# F2 = 5 * (precision * recall) / max((4 * precision + recall), 1e-5)
+			# print("detect time: ", time.time() - st)
+			# print("Threshold: {:5f}, Prec: {:5f}, Rec: {:5f}, F1: {:5f}, F2: {:5f}, pred_bbox_count: {}".format(thresh, precision, recall, F1, F2, pred_bbox_count))
+			# saved_results = {"gt_bboxes": gt_bboxes, "gt_labels": gt_labels, "gt_difficults": gt_difficults, "pred_bboxes": pred_bboxes, "pred_labels": pred_labels, "pred_scores": pred_scores, "filtered_pred_bbox": pred_list, "filtered_target_bbox": target_list}
+			# file_name = 'threshold=' + str(thresh)
+			# outfile = open(file_name, 'wb')
+			# pickle.dump(saved_results, outfile)
+			# outfile.close()
 			#print("pred_bboxes size", len(pred_bboxes), pred_bboxes, "\n", "pred_labels size", len(pred_labels), pred_labels, "\n", "pred_scores size", len(pred_scores), pred_scores)
 			#print("precision length", len(result[0][1]), "\n",  "precision: ", result[0][1], "\n", "recall legnth: ", len(result[1][1]), "\n", "recall: ", result[1][1])
 
