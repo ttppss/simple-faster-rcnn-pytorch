@@ -24,20 +24,20 @@ def eval(dataloader, model, test_num):
 			for ii, (ori_img, imgs, sizes, gt_bboxes_, gt_labels_, gt_difficults_) in enumerate(dataloader):
 				#print("img: ", len(imgs), "\n", imgs, "\n", "boxes: ", gt_bboxes, "\n", "label: ", gt_labels_)
 				# print('index: ', ii, "gt_bboxes_ shape: ", len(gt_bboxes_), '\n', "gt_bboxes_", gt_bboxes_, '\n', '*' * 80, '\n')
+				for gt_bbox in gt_bboxes_.numpy():
+					for gt in gt_bbox:
+						gt[0], gt[1], gt[2], gt[3] = gt[1], gt[0], gt[3], gt[2]
 				sizes = [sizes[0][0].item(), sizes[1][0].item()]
 				pred_bboxes_, pred_labels_, pred_scores_ = model.predict(imgs, [sizes])
 				# print('index: ', ii, "pred_bboxes_ shape: ", len(pred_bboxes_), '\n', "pred_bboxes_", pred_bboxes_, '\n', '*' * 80, '\n')
 				for pred_bbox in pred_bboxes_:
-					pp = list()
 					for pred in pred_bbox:
-						ppp = list()
-						ppp.append([pred[1], pred[0], pred[3], pred[2]])
-					pp.append(ppp)
+						pred[0], pred[1], pred[2], pred[3] = pred[1], pred[0], pred[3], pred[2]
 				# print("pred_bboxes_shape: ", len(pred_bboxes_), "\n", "pred_bboxes: ", pred_bboxes_, '\n')
 				gt_bboxes += list(gt_bboxes_.numpy())
 				gt_labels += list(gt_labels_.numpy())
 				gt_difficults += list(gt_difficults_.numpy())
-				pred_bboxes += pp
+				pred_bboxes += pred_bboxes_
 				pred_labels += pred_labels_
 				pred_scores += pred_scores_
 				# print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
@@ -60,13 +60,14 @@ def eval(dataloader, model, test_num):
 				pred_score = pred_scores[i]
 				pred_list = []
 				target_list = []
+				print('index: ', i, 'pred_bbox', pred_bbox, '\n', '*' * 80)
 				combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
-				print('index: ', i, 'combination_bbox_score', combination_bbox_score)
+				print('index: ', i, 'combination_bbox_score', combination_bbox_score, '\n', '*' * 80)
 				for j in range(len(pred_bbox)):
 					if combination_bbox_score[0][2] > thresh:
 						pred_list.append(combination_bbox_score[0][0])
 						target_list.append(combination_bbox_score[0][1])
-				image= ori_imgs[i]
+				image = ori_imgs[i]
 			# 	eval.eval_add_result(target_list, pred_list,image=image, image_name=i)
 			# precision, recall, pred_bbox_count = eval.get_result()
 			# F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
@@ -96,8 +97,8 @@ def main():
         test_dataloader = data_.DataLoader(testset,
                                        batch_size=1,
                                        num_workers=opt.test_num_workers,
-                                       shuffle=False, \
-                                       pin_memory=True
+                                       shuffle=False,
+									   pin_memory=True
                                        )
         #model = trainer.load_state_dict(torch.load(model_path)['model'])
         state_dict = torch.load(model_path)
