@@ -56,6 +56,7 @@ class Metric(object):
         for index_gt_box, gt_box in enumerate(ground_truth):
             hasTP = False
             gt = gt_box
+            TP_Count = 0
             #print("gt_box: ", gt_box, "\n")
 
             not_matched = []
@@ -79,12 +80,15 @@ class Metric(object):
                     bbox_matched= overlaps>self.iou_thresh
 
                 if bbox_matched:
+                    TP_Count += 1
                     # TODO seems not that right here.
-                    if not hasTP:
-                        self.TPs.append(j)
-                        hasTP = True
+                    # if not hasTP:
+                    self.TPs.append(j)
                 else:
                     self.FPs.append(j)
+            if TP_Count > 0:
+                hasTP = True
+
             #pred_points = not_matched
             #self.FPs += len(not_matched)
 

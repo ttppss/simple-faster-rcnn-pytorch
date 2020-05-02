@@ -105,6 +105,10 @@ class Metric(object):
                 pt2 = tuple([int(gt[2]), int(gt[3])])
                 cv2.rectangle(Detectionimage, pt1, pt2, self.GT_color, 2)
                 cv2.rectangle(FPimage, pt1, pt2, self.GT_color, 2)
+        for idx, fp in self.FPs:
+            if fp in self.TPs:
+                self.FPs.pop(idx)
+
 
         if self.visualize:
             if missing:
