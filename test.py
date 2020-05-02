@@ -61,6 +61,8 @@ def eval(dataloader, model, test_num):
 				pred_list = []
 				target_list = []
 				print('index: ', i, 'pred_bbox', pred_bbox, '\n', '*' * 80)
+				print('index: ', i, 'target_bbox', target_bbox, '\n', '*' * 80)
+				print('index: ', i, 'pred_score', pred_score, '\n', '*' * 80)
 				combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
 				print('index: ', i, 'combination_bbox_score', combination_bbox_score, '\n', '*' * 80)
 				for j in range(len(pred_bbox)):
