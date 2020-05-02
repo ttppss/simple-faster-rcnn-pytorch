@@ -61,7 +61,7 @@ def eval(dataloader, model, test_num):
 				pred_list = []
 				target_list = target_bbox
 				# print('index: ', i, 'pred_bbox', pred_bbox, '\n', '*' * 80)
-				print('index: ', i, 'target_list', target_list, '\n', '*' * 80)
+				# print('index: ', i, 'target_list', target_list, '\n', '*' * 80)
 				# print('index: ', i, 'pred_score', pred_score, '\n', '*' * 80)
 				combination_bbox_score = list(zip(pred_bbox, pred_score))
 				# print('index: ', i, 'combination_bbox_score', combination_bbox_score, '\n', '*' * 80)
@@ -69,7 +69,7 @@ def eval(dataloader, model, test_num):
 					if combination[1] > thresh:
 						pred_list.append(combination[0])
 						# target_list.append(j[1])
-				print('index: ', i, 'pred_list', pred_list, '\n', '*' * 80)
+				# print('index: ', i, 'pred_list', pred_list, '\n', '*' * 80)
 				image = ori_imgs[i]
 				eval.eval_add_result(target_list, pred_list, image=image, image_name=i)
 			precision, recall, pred_bbox_count = eval.get_result()
