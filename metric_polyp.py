@@ -111,7 +111,7 @@ class Metric(object):
                 cv2.rectangle(FPimage, pt1, pt2, self.GT_color, 2)
         print("FP: ", len(self.FPs), self.FPs, '\n', '*' * 80)
         print('TP: ', len(self.TPs), self.TPs, '\n', '*' * 80)
-        if len(self.FPs > 0):
+        if len(self.FPs) > 0:
             for idx, fp in self.FPs:
                 if fp in self.TPs:
                     self.FPs.pop(idx)
