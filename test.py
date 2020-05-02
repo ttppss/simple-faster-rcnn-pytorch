@@ -59,16 +59,16 @@ def eval(dataloader, model, test_num):
 				target_bbox = gt_bboxes[i]
 				pred_score = pred_scores[i]
 				pred_list = []
-				target_list = []
+				target_list = target_bbox
 				# print('index: ', i, 'pred_bbox', pred_bbox, '\n', '*' * 80)
 				# print('index: ', i, 'target_bbox', target_bbox, '\n', '*' * 80)
 				# print('index: ', i, 'pred_score', pred_score, '\n', '*' * 80)
-				combination_bbox_score = list(zip(pred_bbox, target_bbox, pred_score))
+				combination_bbox_score = list(zip(pred_bbox, pred_score))
 				# print('index: ', i, 'combination_bbox_score', combination_bbox_score, '\n', '*' * 80)
-				for j in combination_bbox_score:
-					if j[2] > thresh:
-						pred_list.append(j[0])
-						target_list.append(j[1])
+				for combination in combination_bbox_score:
+					if combination[1] > thresh:
+						pred_list.append(combination[0])
+						# target_list.append(j[1])
 				image = ori_imgs[i]
 				eval.eval_add_result(target_list, pred_list, image=image, image_name=i)
 			precision, recall, pred_bbox_count = eval.get_result()
