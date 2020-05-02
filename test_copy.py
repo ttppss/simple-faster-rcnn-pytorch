@@ -6,11 +6,11 @@ from data.dataset import Dataset, TestDataset, inverse_normalize
 from model import FasterRCNNVGG16
 from torch.utils import data as data_
 from trainer import FasterRCNNTrainer
-from metric_polyp import Metric
+from metric_polyp_backup import Metric
 import torch
 from torchvision.models import vgg16
 from utils.eval_tool import calc_detection_voc_prec_rec
-from metric_polyp import *
+from metric_polyp_backup import *
 import time
 import pickle
 

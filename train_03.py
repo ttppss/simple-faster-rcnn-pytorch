@@ -16,7 +16,7 @@ from trainer import FasterRCNNTrainer
 from utils import array_tool as at
 from utils.vis_tool import visdom_bbox
 from utils.eval_tool import eval_detection_voc
-from metric_polyp import Metric
+from metric_polyp_backup import Metric
 
 
 # fix for ulimit
