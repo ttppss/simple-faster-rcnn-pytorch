@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 import numpy as np
 import json
 import imageio
-from skimage import io
-
+# from skimage import io
+import cv2
 from .util import read_image
 
 
@@ -117,7 +117,7 @@ class VOCBboxDataset:
             img_file = os.path.join(self.data_dir, im_info["filename"])
             # print("img_file: ", img_file)
 
-        img = io.imread(img_file).transpose(2, 0, 1)
+        img = cv2.imread(img_file).transpose(2, 0, 1)
         # print("img shape after transpose: ", img.shape)
 
 
