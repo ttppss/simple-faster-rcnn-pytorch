@@ -32,7 +32,7 @@ def caffe_normalize(img):
     """
     return appr -125-125 BGR
     """
-    img = img[[2, 1, 0], :, :]  # RGB-BGR
+    # img = img[[2, 1, 0], :, :]  # RGB-BGR
     img = img * 255
     mean = np.array([122.7717, 115.9465, 102.9801]).reshape(3, 1, 1)
     img = (img - mean).astype(np.float32, copy=True)

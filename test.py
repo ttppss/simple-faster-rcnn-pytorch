@@ -70,7 +70,7 @@ def eval(dataloader, model, test_num):
 						pred_list.append(combination[0])
 						# target_list.append(j[1])
 				# print('index: ', i, 'pred_list', pred_list, '\n', '*' * 80)
-				image = ori_imgs[i]
+				image = cv2.cvtColor(ori_imgs[i], cv2.COLOR_BGR2RGB)
 				eval.eval_add_result(target_list, pred_list, image=image, image_name=i)
 			precision, recall, pred_bbox_count = eval.get_result()
 			F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
