@@ -82,12 +82,15 @@ class Metric(object):
                 if bbox_matched:
                     TP_Count += 1
                     # TODO seems not that right here.
-                    # if not hasTP:
-                    self.TPs.append(j)
+                    # if not hasTP, only pick one TP from the list, discard others since they won't intercept:
+                    if not hasTP:
+                        self.TPs.append(j)
+                        hasTP = True
                 else:
-                    self.FPs.append(j)
-            if TP_Count > 0:
-                hasTP = True
+                    not_matched.append(j)
+            pred_points = not_matched
+            # if TP_Count > 0:
+            #     hasTP = True
 
             #pred_points = not_matched
             #self.FPs += len(not_matched)
@@ -127,7 +130,7 @@ class Metric(object):
                 cv2.rectangle(FPimage, pt1, pt2, self.FP_color, 2)
             cv2.imwrite(self.false_positive_folder + str(image_name) + '.jpg', FPimage)
         #  add FP here
-        #self.FPs += pred_points
+        self.FPs += pred_points
         
 
     def get_result(self):
