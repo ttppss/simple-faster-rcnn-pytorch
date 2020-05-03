@@ -118,7 +118,7 @@ class VOCBboxDataset:
             # print("img_file: ", img_file)
         # HWC to CHW, and img now in BGR mode.
         img = cv2.imread(img_file).transpose(2, 0, 1)
-        print('index:', i, 'read in image shape: ', img.shape, '\n', 'ori_img: ', img, '\n', '*' * 80)
+        # print('index:', i, 'read in image shape: ', img.shape, '\n', 'ori_img: ', img, '\n', '*' * 80)
         # print("img shape after transpose: ", img.shape)
 
 
