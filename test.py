@@ -40,9 +40,9 @@ def eval(dataloader, model, test_num):
 				pred_bboxes += pred_bboxes_
 				pred_labels += pred_labels_
 				pred_scores += pred_scores_
-				print('index:', ii, 'ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n', '*' * 80)
+				# print('index:', ii, 'ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n', '*' * 80)
 				ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
-				print('index:', ii, 'ori_img shape after squezz and transpose: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n', '*' * 80)
+				# print('index:', ii, 'ori_img shape after squezz and transpose: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n', '*' * 80)
 				ori_imgs.append(ori_img)
 
 
@@ -70,7 +70,7 @@ def eval(dataloader, model, test_num):
 						pred_list.append(combination[0])
 						# target_list.append(j[1])
 				# print('index: ', i, 'pred_list', pred_list, '\n', '*' * 80)
-				image = cv2.cvtColor(ori_imgs[i], cv2.COLOR_BGR2RGB)
+				image = ori_imgs[i]
 				eval.eval_add_result(target_list, pred_list, image=image, image_name=i)
 			precision, recall, pred_bbox_count = eval.get_result()
 			F1 = 2 * (precision * recall) / max((precision + recall), 1e-5)
