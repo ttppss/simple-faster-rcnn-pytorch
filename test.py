@@ -40,9 +40,9 @@ def eval(dataloader, model, test_num):
 				pred_bboxes += pred_bboxes_
 				pred_labels += pred_labels_
 				pred_scores += pred_scores_
-				# print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
+				print('index:', ii, 'ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n', '*' * 80)
 				ori_img = ori_img.squeeze().numpy().transpose(1, 2, 0)
-				# print('ori_img shape: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n')
+				print('index:', ii, 'ori_img shape after squezz and transpose: ', ori_img.shape, '\n', 'ori_img: ', ori_img, '\n', '*' * 80)
 				ori_imgs.append(ori_img)
 
 
